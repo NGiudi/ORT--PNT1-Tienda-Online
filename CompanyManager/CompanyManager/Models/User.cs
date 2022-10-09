@@ -4,6 +4,8 @@ namespace GestorEmpresa.Models
 {
     public class User : Person
     {
+        public DateTime? deleted_at;
+
         [Key]
         public int id { get; set; }
 

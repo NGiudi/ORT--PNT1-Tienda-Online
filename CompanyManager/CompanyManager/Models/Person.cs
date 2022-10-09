@@ -4,7 +4,7 @@ namespace GestorEmpresa.Models
 {
     public class Person
     {
-        public List<Address> address { get; set; }
+        public Address address { get; set; }
 
         [Display(Name = "Documento")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
@@ -21,7 +21,7 @@ namespace GestorEmpresa.Models
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public string email { get; set; }
-        
+
         [Key]
         public int id { get; set; }
 

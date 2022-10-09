@@ -9,6 +9,12 @@ namespace GestorEmpresa.Models
         [Range(0, 100, ErrorMessage = ErrorViewModel.PorcentRange)]
         public int discount { get; set; }
 
+        public DateTime? deleted_at;
+
+        [Display(Name = "Descripción")]
+        [MaxLength(200, ErrorMessage = ErrorViewModel.MaxCharacters)]
+        public int description { get; set; }
+
         [Key]
         public int id { get; set; }
 
