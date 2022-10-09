@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GestorEmpresa.Models
+namespace CompanyManager.Models
 {
     public class Person
     {
