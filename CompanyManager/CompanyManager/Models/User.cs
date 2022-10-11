@@ -7,20 +7,20 @@ namespace CompanyManager.Models
         public DateTime? deleted_at;
 
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Usuario")]
         [MaxLength(15, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public string username { get; set; }
+        public string Username { get; set; }
 
         [Display(Name = "Contraseña")]
         [MaxLength(20, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(8, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public string password { get; set; }
+        public string Password { get; set; }
 
-        public UserRoles role { get; set; }
+        public UserRoles Role { get; set; }
     }
 }

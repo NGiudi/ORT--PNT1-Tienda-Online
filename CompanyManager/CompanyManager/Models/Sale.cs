@@ -5,21 +5,21 @@ namespace CompanyManager.Models
 {
     public class Sale
     {
+        [Key]
+        public int Id { get; set; }
+
         [Display(Name = "Comprador")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public Person buyer { get; set; }
+        public Person Buyer { get; set; }
 
-        public DateTime? deleted_at;
+        public DateTime? DeletedAt;
 
-        [Key]
-        public int id { get; set; }
-
-        public List<SaleProduct> products { get; set; }
+        public List<Product> Products { get; set; }
 
         [Display(Name = "Total de la venta")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public float total_price { get; set; }
+        public float TotalPrice { get; set; }
 
-        public User seller { get; set; }
+        public User Seller { get; set; }
     }
 }
