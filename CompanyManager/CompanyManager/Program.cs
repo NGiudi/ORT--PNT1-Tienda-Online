@@ -1,4 +1,8 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<CMContext>(options =>
+    options.UseSqlite(@"filename=D:\Stock.db"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
