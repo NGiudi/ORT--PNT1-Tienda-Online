@@ -29,7 +29,7 @@ namespace CompanyManager.Models
         [Range(0, 100, ErrorMessage = ErrorViewModel.PorcentRange)]
         public int Discount { get; set; }
 
-        public DateTime? deleted_at;
+        public DateTime? DeletedAt;
 
         [Display(Name = "Stock")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]

@@ -18,6 +18,9 @@ namespace CompanyManager.Models
         [MaxLength(2, ErrorMessage = ErrorViewModel.MaxCharacters)]
         public int? Floor { get; set; }
 
+        [Key]
+        public int Id { get; set; }
+
         [Display(Name = "Altura")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public int StreetNumber { get; set; }

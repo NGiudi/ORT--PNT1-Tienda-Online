@@ -13,4 +13,6 @@ using CompanyManager.Models;
         }
 
         public DbSet<CompanyManager.Models.Product> Product { get; set; } = default!;
+
+        public DbSet<CompanyManager.Models.User> User { get; set; }
     }
