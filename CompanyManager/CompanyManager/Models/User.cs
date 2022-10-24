@@ -4,7 +4,7 @@ namespace CompanyManager.Models
 {
     public class User : Person
     {
-        public DateTime? DeletedAt;
+        public DateTime? DeletedAt { get; set; }
 
         [Display(Name = "Usuario")]
         [MaxLength(15, ErrorMessage = ErrorViewModel.MaxCharacters)]

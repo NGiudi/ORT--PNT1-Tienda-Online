@@ -12,6 +12,18 @@ using CompanyManager.Models;
         {
         }
 
+        public override int SaveChanges() {
+            foreach (var item in ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Deleted && 
+                e.Metadata.GetProperties().Any(x => x.Name == "DeletedAt")))
+            {
+                item.State = EntityState.Unchanged;
+                item.CurrentValues["DeletedAt"] = DateTime.UtcNow;
+            }
+
+            return base.SaveChanges();
+        }
+
         public DbSet<CompanyManager.Models.Product> Product { get; set; } = default!;
 
         public DbSet<CompanyManager.Models.User> User { get; set; }

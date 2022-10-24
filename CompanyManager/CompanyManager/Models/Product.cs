@@ -13,6 +13,8 @@ namespace CompanyManager.Models
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public string Name { get; set; }
+        
+        public DateTime? DeletedAt { get; set; }
 
         [Display(Name = "Descripción")]
         [MaxLength(200, ErrorMessage = ErrorViewModel.MaxCharacters)]
@@ -28,8 +30,6 @@ namespace CompanyManager.Models
         [Display(Name = "Descuento")]
         [Range(0, 100, ErrorMessage = ErrorViewModel.PorcentRange)]
         public int Discount { get; set; }
-
-        public DateTime? DeletedAt;
 
         [Display(Name = "Stock")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]

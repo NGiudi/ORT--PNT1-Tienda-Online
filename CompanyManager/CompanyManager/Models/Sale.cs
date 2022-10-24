@@ -12,7 +12,7 @@ namespace CompanyManager.Models
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public Person Buyer { get; set; }
 
-        public DateTime? DeletedAt;
+        public DateTime? DeletedAt { get; set; }
 
         public List<Product> Products { get; set; }
 

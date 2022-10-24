@@ -123,8 +123,8 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+
             if (product == null)
             {
                 return NotFound();
@@ -138,17 +138,17 @@ namespace CompanyManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Product == null)
-            {
+            if (_context.Product == null) {
                 return Problem("Entity set 'CMContext.Product'  is null.");
             }
+
             var product = await _context.Product.FindAsync(id);
-            if (product != null)
-            {
+            
+            if (product != null) {
                 _context.Product.Remove(product);
+                _context.SaveChanges();
             }
             
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
