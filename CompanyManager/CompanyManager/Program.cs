@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<CMContext>(options => options.UseSqlite(@"filename=C:\Users\nicol\Downloads\Stock.db"));
+builder.Services.AddDbContext<CMContext>(options => options.UseSqlite(@"filename=C:\DB\Stock.db"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
