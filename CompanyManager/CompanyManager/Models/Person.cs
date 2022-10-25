@@ -4,8 +4,6 @@ namespace CompanyManager.Models
 {
     public class Person
     {
-        public Address Address { get; set; }
-
         [Key]
         public int Id { get; set; }
 

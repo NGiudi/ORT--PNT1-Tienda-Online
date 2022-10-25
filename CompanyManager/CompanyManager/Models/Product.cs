@@ -33,6 +33,7 @@ namespace CompanyManager.Models
 
         [Display(Name = "Stock")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
+        [Range(0, int.MaxValue, ErrorMessage = ErrorViewModel.StockErrorRange)]
         public int Stock { get; set; }
     }
 }

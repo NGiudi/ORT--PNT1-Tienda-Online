@@ -18,6 +18,7 @@ namespace CompanyManager.Models
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public string Password { get; set; }
 
+        [Display(Name = "Rol")]
         public UserRoles Role { get; set; }
     }
 }

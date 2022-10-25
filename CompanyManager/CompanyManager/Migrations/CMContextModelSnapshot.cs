@@ -16,43 +16,6 @@ namespace CompanyManager.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
 
-            modelBuilder.Entity("CompanyManager.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("Department")
-                        .HasMaxLength(4)
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Floor")
-                        .HasMaxLength(2)
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("StreetNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Address");
-                });
-
             modelBuilder.Entity("CompanyManager.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -92,9 +55,6 @@ namespace CompanyManager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AddressId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("DeletedAt")
@@ -142,20 +102,7 @@ namespace CompanyManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("CompanyManager.Models.User", b =>
-                {
-                    b.HasOne("CompanyManager.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

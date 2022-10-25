@@ -11,5 +11,6 @@ namespace CompanyManager.Models
         public const string MinCharacters = "{0} no debe ser inferior a los {1} caracteres.";
         public const string RequiredField = "{0} es obligatorio.";
         public const string PorcentRange = "{0} debe ser un valor entre 0 y 100.";
+        public const string StockErrorRange = "{0} debe ser mayor a 0.";
     }
 }
