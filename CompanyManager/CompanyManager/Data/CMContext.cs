@@ -27,4 +27,6 @@ using CompanyManager.Models;
         public DbSet<CompanyManager.Models.Product> Product { get; set; } = default!;
 
         public DbSet<CompanyManager.Models.User> User { get; set; }
+
+        public DbSet<CompanyManager.Models.Sale> Sale { get; set; }
     }

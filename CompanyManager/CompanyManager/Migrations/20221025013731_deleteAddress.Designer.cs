@@ -10,50 +10,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyManager.Migrations
 {
     [DbContext(typeof(CMContext))]
-    [Migration("20221024235200_added_soft_delete")]
-    partial class added_soft_delete
+    [Migration("20221025013731_deleteAddress")]
+    partial class deleteAddress
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
-
-            modelBuilder.Entity("CompanyManager.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("Department")
-                        .HasMaxLength(4)
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("Floor")
-                        .HasMaxLength(2)
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("StreetNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Address");
-                });
 
             modelBuilder.Entity("CompanyManager.Models.Product", b =>
                 {
@@ -96,19 +59,11 @@ namespace CompanyManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("DocNumber")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("DocType")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -144,20 +99,7 @@ namespace CompanyManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("CompanyManager.Models.User", b =>
-                {
-                    b.HasOne("CompanyManager.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

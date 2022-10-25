@@ -11,12 +11,6 @@ namespace CompanyManager.Models
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public int DocNumber { get; set; }
 
-        [Display(Name = "Tipo")]
-        [MaxLength(10, ErrorMessage = ErrorViewModel.MaxCharacters)]
-        [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
-        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public string DocType { get; set; }
-
         [Display(Name = "Email")]
         [MaxLength(50, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]

@@ -10,49 +10,51 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyManager.Migrations
 {
     [DbContext(typeof(CMContext))]
-    [Migration("20221017023110_createDB")]
-    partial class createDB
+    [Migration("20221025013928_salesTable")]
+    partial class salesTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
 
-            modelBuilder.Entity("CompanyManager.Models.Address", b =>
+            modelBuilder.Entity("CompanyManager.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("City")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(40)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Department")
-                        .HasMaxLength(4)
+                    b.Property<int>("DocNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Floor")
-                        .HasMaxLength(2)
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("StreetName")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StreetNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ZipCode")
+                    b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(5)
+                        .HasMaxLength(15)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Person");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Person");
                 });
 
             modelBuilder.Entity("CompanyManager.Models.Product", b =>
@@ -62,8 +64,6 @@ namespace CompanyManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -84,56 +84,56 @@ namespace CompanyManager.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("REAL");
 
+                    b.Property<int?>("SaleId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Stock")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SaleId");
+
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("CompanyManager.Models.User", b =>
+            modelBuilder.Entity("CompanyManager.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AddressId")
+                    b.Property<int>("BuyerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DocNumber")
+                    b.Property<int>("SellerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("DocType")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("REAL");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
+                    b.HasKey("Id");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
+                    b.HasIndex("BuyerId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(15)
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("Sale");
+                });
+
+            modelBuilder.Entity("CompanyManager.Models.User", b =>
+                {
+                    b.HasBaseType("CompanyManager.Models.Person");
+
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Role")
@@ -144,22 +144,38 @@ namespace CompanyManager.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("User");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("CompanyManager.Models.User", b =>
+            modelBuilder.Entity("CompanyManager.Models.Product", b =>
                 {
-                    b.HasOne("CompanyManager.Models.Address", "Address")
+                    b.HasOne("CompanyManager.Models.Sale", null)
+                        .WithMany("Products")
+                        .HasForeignKey("SaleId");
+                });
+
+            modelBuilder.Entity("CompanyManager.Models.Sale", b =>
+                {
+                    b.HasOne("CompanyManager.Models.Person", "Buyer")
                         .WithMany()
-                        .HasForeignKey("AddressId")
+                        .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Address");
+                    b.HasOne("CompanyManager.Models.User", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("CompanyManager.Models.Sale", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

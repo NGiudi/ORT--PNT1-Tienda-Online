@@ -4,7 +4,7 @@
 
 namespace CompanyManager.Migrations
 {
-    public partial class added_soft_delete : Migration
+    public partial class segundoIntento : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
