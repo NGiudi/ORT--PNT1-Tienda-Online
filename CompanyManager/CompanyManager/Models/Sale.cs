@@ -14,7 +14,7 @@ namespace CompanyManager.Models
 
         public DateTime? DeletedAt { get; set; }
 
-        public List<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         [Display(Name = "Total de la venta")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
