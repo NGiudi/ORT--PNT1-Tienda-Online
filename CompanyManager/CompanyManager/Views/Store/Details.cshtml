@@ -1,0 +1,25 @@
+﻿@model CompanyManager.Models.Product
+
+@{
+    ViewData["Title"] = "Tienda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<div class="card" style="width: 18rem;">
+    <img src="@Html.DisplayFor(model => model.Image)" class="card-img-top" alt="..." />
+
+    <div class="card-body">
+        <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
+        <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+        <p class="fs-4 fw-bold">$@Html.DisplayFor(model => model.Price)</p>
+
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" min="1" placeholder="Cantidad" />
+        </div>
+
+        <a class="btn btn-primary">Comprar</a>
+    </div>
+</div>
+

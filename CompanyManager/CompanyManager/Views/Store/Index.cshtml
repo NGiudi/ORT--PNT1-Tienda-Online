@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CompanyManager.Models.Product>
+
+@{
+    ViewData["Title"] = "Tienda";
+}
+
+<div class="container text-center">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top" alt="...">
+            
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                    <p class="fs-4 fw-bold">$@Html.DisplayFor(modelItem => item.Price)</p>
+
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Comprar</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
