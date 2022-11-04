@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CompanyManager.Controllers
 {
+    [Authorize(Roles = "ADMIN,SELLER")]
     public class SalesController : Controller
     {
         private readonly CMContext _context;

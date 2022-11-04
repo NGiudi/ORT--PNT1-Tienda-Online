@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+<!DOCTYPE html>
 
 <html lang="es">
 <head>
@@ -28,16 +30,37 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Index">Tienda</a>
                         </li>
 
+                        @if (User.IsInRole("ADMIN") || User.IsInRole("SELLER"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Productos</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("ADMIN") || User.IsInRole("SELLER"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Sales" asp-action="Index">Ventas</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div>
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Listado de productos</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Listado de usuarios</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Sales" asp-action="Index">Listado de ventas</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">logout</a>
                         </li>
                     </ul>
                 </div>

@@ -3,6 +3,7 @@
     public enum UserRoles
     {
         ADMIN,
+        BUYER,
         SELLER,
     }
 }

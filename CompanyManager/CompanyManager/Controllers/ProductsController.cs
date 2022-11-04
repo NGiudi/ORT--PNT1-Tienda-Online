@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CompanyManager.Controllers
 {
+    [Authorize(Roles = "ADMIN,SELLER")]
     public class ProductsController : Controller
     {
         private readonly CMContext _context;

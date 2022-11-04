@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CompanyManager.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class UsersController : Controller
     {
         private readonly CMContext _context;
@@ -27,15 +30,13 @@ namespace CompanyManager.Controllers
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.User == null)
-            {
+            if (id == null || _context.User == null) {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
+            var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (user == null) {
                 return NotFound();
             }
 

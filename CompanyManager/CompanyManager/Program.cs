@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,15 @@ builder.Services.AddDbContext<CMContext>(options => options.UseSqlite(@"filename
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configuración de cookies para el logueo.
+// Tiene fecha de expiracion las cookies.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option => {
+        option.LoginPath = "/Login";
+        option.ExpireTimeSpan = TimeSpan.FromDays(1);
+        option.AccessDeniedPath = "/Store";
+    });
 
 var app = builder.Build();
 
@@ -23,6 +33,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
