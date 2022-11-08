@@ -9,6 +9,9 @@ builder.Services.AddDbContext<CMContext>(options => options.UseSqlite(@"filename
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Configuracion de Session para el carrito.
+builder.Services.AddSession();
+
 // Configuración de cookies para el logueo.
 // Tiene fecha de expiracion las cookies.
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -19,6 +22,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 var app = builder.Build();
+
+// Configuracion de session para carrito.
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
