@@ -16,18 +16,21 @@ namespace CompanyManager.Controllers
     {
         private readonly CMContext _context;
 
-        public ProductsController(CMContext context)
-        {
+        public ProductsController(CMContext context) {
             _context = context;
         }
 
-        // GET: Products
+        private bool ProductExists(int id) {
+            return _context.Product.Any(e => e.Id == id);
+        }
+
+        // Vista de listado de productos.
         public async Task<IActionResult> Index()
         {
               return View(await _context.Product.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // Vista detalle de producto.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Product == null)
@@ -45,29 +48,27 @@ namespace CompanyManager.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // Vista de creación de producto vacía.
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Al crear producto, luego de apretar en el botón crear.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Discount,Description,Image,Name,Price,Stock")] Product product)
+        public async Task<IActionResult> Create(Product product)
         {
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(product);
         }
 
-        // GET: Products/Edit/5
+        // Vista de edición de producto.
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Product == null)
@@ -83,12 +84,10 @@ namespace CompanyManager.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Al editar producto, luego de apretar en el botón editar.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Discount,Description,Image,Name,Price,Stock")] Product product)
+        public async Task<IActionResult> Edit(int id, Product product)
         {
             if (id != product.Id)
             {
@@ -118,25 +117,23 @@ namespace CompanyManager.Controllers
             return View(product);
         }
 
-        // GET: Products/Delete/5
+        // Vista de eliminar de producto.
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Product == null)
-            {
+            if (id == null || _context.Product == null) {
                 return NotFound();
             }
 
             var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (product == null)
-            {
+            if (product == null) {
                 return NotFound();
             }
 
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // Al eliminar producto, luego de apretar en el botón eliminar.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -153,11 +150,6 @@ namespace CompanyManager.Controllers
             }
             
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductExists(int id)
-        {
-          return _context.Product.Any(e => e.Id == id);
         }
     }
 }

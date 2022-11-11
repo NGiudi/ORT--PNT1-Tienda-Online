@@ -20,13 +20,18 @@ namespace CompanyManager.Controllers
             _context = context;
         }
 
-        // GET: Sales
+        private bool SaleExists(int id)
+        {
+            return _context.Sale.Any(e => e.Id == id);
+        }
+
+        // Vista de listado de ventas.
         public async Task<IActionResult> Index()
         {
               return View(await _context.Sale.ToListAsync());
         }
 
-        // GET: Sales/Details/5
+        // Vista detalle de la venta.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Sale == null)
@@ -44,18 +49,16 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // GET: Sales/Create
+        // Vista de creación de venta vacía.
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sales/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Al crear venta, luego de apretar en el botón crear.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DeletedAt,TotalPrice")] Sale sale)
+        public async Task<IActionResult> Create(Sale sale)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +69,7 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // GET: Sales/Edit/5
+        // Vista de edición de venta.
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Sale == null)
@@ -82,12 +85,10 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // POST: Sales/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Al editar venta, luego de apretar en el botón editar.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DeletedAt,TotalPrice")] Sale sale)
+        public async Task<IActionResult> Edit(int id, Sale sale)
         {
             if (id != sale.Id)
             {
@@ -117,7 +118,7 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // GET: Sales/Delete/5
+        // Vista de eliminar de venta.
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Sale == null)
@@ -135,7 +136,7 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // POST: Sales/Delete/5
+        // Al eliminar venta, luego de apretar en el botón eliminar.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -152,11 +153,6 @@ namespace CompanyManager.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool SaleExists(int id)
-        {
-          return _context.Sale.Any(e => e.Id == id);
         }
     }
 }

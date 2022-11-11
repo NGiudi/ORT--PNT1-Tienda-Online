@@ -6,38 +6,36 @@ using CompanyManager.Models;
 
 namespace CompanyManager.Controllers
 {
-    public class LoginController : Controller
+    public class SessionController : Controller
     {
         private readonly CMContext _context;
 
-        public LoginController(CMContext context)
+        public SessionController(CMContext context)
         {
             _context = context;
         }
 
-        private User? UserValidation(string Username, string Password)
-        {
-            return _context.User
-                    .Where(item => item.Username == Username && item.Password == Password)
-                    .FirstOrDefault();
-        }
-
+        // Según el rol del usuario se redirecciona a diferentes vistas.
         private IActionResult UsersRedirect (UserRoles userRole) {
             if (userRole == UserRoles.ADMIN || userRole == UserRoles.SELLER) { 
-                return RedirectToAction("Index", "Sales");
+                return RedirectToAction("Index", "Products");
             }
 
             return RedirectToAction("Index", "Store");
         }
 
-        public IActionResult Index()
+        // Vista del login.
+        public IActionResult Login()
         {
             return View();
         }
 
+        // Al iniciar sesión, luego de apretar el botón de iniciar sesión.
         [HttpPost]
-        public IActionResult Index(User user) {
-            var findUser = UserValidation(user.Username, user.Password);
+        public IActionResult Login(User user) {
+            var findUser = _context.User
+                .Where(item => item.Username == user.Username && item.Password == user.Password)
+                .FirstOrDefault();
 
             if (findUser != null) {
                 var claims = new List<Claim> {
@@ -50,16 +48,17 @@ namespace CompanyManager.Controllers
 
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
 
-                //TODO: según el usuario redireccionarlo a una pantalla diferente.
                 return UsersRedirect(findUser.Role);
             } else {
                 return View();
             }
         }
 
+        // Al cerrar sesión, luego de apretar el botón de logout.
+        // Se borra las cookies y se redirecciona a la vista de la tienda.
         public IActionResult Logout() {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("Index", "Store");
         }
     }
 }

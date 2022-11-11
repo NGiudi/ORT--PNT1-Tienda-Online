@@ -16,20 +16,21 @@ namespace CompanyManager.Controllers
     {
         private readonly CMContext _context;
 
-        public UsersController(CMContext context)
-        {
+        public UsersController(CMContext context) {
             _context = context;
         }
 
-        // GET: Users
-        public async Task<IActionResult> Index()
-        {
+        private bool UserExists(int id) {
+            return _context.User.Any(e => e.Id == id);
+        }
+
+        // Vista de listado de usuarios.
+        public async Task<IActionResult> Index() {
               return View(await _context.User.ToListAsync());
         }
 
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
+        // Vista detalle del usuario.
+        public async Task<IActionResult> Details(int? id) {
             if (id == null || _context.User == null) {
                 return NotFound();
             }
@@ -43,19 +44,15 @@ namespace CompanyManager.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
-        public IActionResult Create()
-        {
+        // Vista vacía de creación de del usuario.
+        public IActionResult Create() {
             return View();
         }
 
-        // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Al crear usuario, luego de apretar en el botón crear.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Username,Password,Role,Id,DocNumber,DocType,Email,LastName,Name,Phone")] User user)
-        {
+        public async Task<IActionResult> Create(User user) {
             if (ModelState.IsValid)
             {
                 _context.Add(user);
@@ -65,9 +62,8 @@ namespace CompanyManager.Controllers
             return View(user);
         }
 
-        // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
+        // Vista de edición de usuario.
+        public async Task<IActionResult> Edit(int? id) {
             if (id == null || _context.User == null)
             {
                 return NotFound();
@@ -81,13 +77,10 @@ namespace CompanyManager.Controllers
             return View(user);
         }
 
-        // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Al editar usuario, luego de apretar en el botón editar.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, User user)
-        {
+        public async Task<IActionResult> Edit(int id, User user) {
             if (ModelState.IsValid)
             {
                 try
@@ -111,9 +104,8 @@ namespace CompanyManager.Controllers
             return View(user);
         }
 
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
+        // Vista de eliminar de usuario.
+        public async Task<IActionResult> Delete(int? id) {
             if (id == null || _context.User == null)
             {
                 return NotFound();
@@ -129,11 +121,10 @@ namespace CompanyManager.Controllers
             return View(user);
         }
 
-        // POST: Users/Delete/5
+        // Al eliminar usuario, luego de apretar en el botón eliminar.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id) {
             if (_context.User == null) {
                 return Problem("Entity set 'CMContext.User'  is null.");
             }
@@ -146,11 +137,6 @@ namespace CompanyManager.Controllers
             }
             
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool UserExists(int id)
-        {
-          return _context.User.Any(e => e.Id == id);
         }
     }
 }

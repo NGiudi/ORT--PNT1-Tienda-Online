@@ -5,26 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<form asp-action="AddCart">
+    @*<img src="@Html.DisplayFor(model => model.Image)" class="card-img-top" alt="..." />*@
+    <input type="hidden" asp-for="Id" />
 
-<div class="card" style="width: 18rem;">
-    
-    <form asp-action="AddCart">
-        @*<img src="@Html.DisplayFor(model => model.Image)" class="card-img-top" alt="..." />*@
-        <input type="hidden" asp-for="Id" />
+    <h1 class="card-title">@Html.DisplayFor(model => model.Name)</h1>
+    <p class="fs-4 fw-bold">$@Html.DisplayFor(model => model.Price)</p>
 
-        <div class="card-body">
-            <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
-            <p class="fs-4 fw-bold">$@Html.DisplayFor(model => model.Price)</p>
+    <div class="form-group">
+        <label asp-for="Quantity" class="control-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
 
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-
-            <input type="submit" class="btn btn-primary" value="Agregar al carrito " />
-        </div>
-    </form>
-</div>
-
+    <input type="submit" class="btn btn-primary" value="Agregar al carrito " />
+</form>
