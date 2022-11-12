@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using CompanyManager.Models;
+using System.Security.Principal;
 
 namespace CompanyManager.Controllers
 {
@@ -39,7 +40,7 @@ namespace CompanyManager.Controllers
 
             if (findUser != null) {
                 var claims = new List<Claim> {
-                    new Claim(ClaimTypes.Name, findUser.Name),
+                    new Claim(ClaimTypes.Name, findUser.Id.ToString()),
                 };
 
                 claims.Add(new Claim(ClaimTypes.Role, findUser.Role.ToString()));

@@ -1,7 +1,12 @@
 ﻿using CompanyManager.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace CompanyManager.Controllers
 {
@@ -50,12 +55,6 @@ namespace CompanyManager.Controllers
             return View(productCart);
         }
 
-        // Vistas listado de productos en el carrito.
-        public IActionResult Cart() {
-            var modelo = this.ProductsInCart;
-            return View(modelo);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         // Al agregar producto en el carrito, luego de apretar en el botón agregar al carrito.
@@ -80,6 +79,44 @@ namespace CompanyManager.Controllers
             }
             
             return View(model);
+        }
+
+        // Vistas listado de productos en el carrito.
+        public IActionResult Cart()
+        {
+            var modelo = this.ProductsInCart;
+            return View(modelo);
+        }
+
+        // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
+        public async Task<IActionResult> Sale() {
+            // TODO: ver si está bien esta validacionde esta forma.
+            if (HttpContext.User.Identity.Name != null)
+            {
+                var sale = new Sale()
+                {
+                    Buyer = new Person()
+                    {
+                        DocNumber = 39999999,
+                        Email = "nicolas.m.giudice@gmnail.com",
+                        LastName = "Giudice",
+                        Name = "Nicolás",
+                        Phone = "1167946707",
+                    },
+                    Products = this.ProductsInCart,
+                    TotalPrice = calculateTotalSale(this.ProductsInCart),
+                };
+
+                //TODO: manejar errores.
+                _context.Add(sale);
+                await _context.SaveChangesAsync();
+                
+                //TODO: Actualizar los stocks. 
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Cart));
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
@@ -124,6 +161,18 @@ namespace CompanyManager.Controllers
             }
 
             return (p.Stock >= pCarrito.Quantity);
+        }
+
+        
+        // Método para calcular el total de la lista de productos.
+        private float calculateTotalSale(List<ProductCart> list) {
+            float totalSale = 0;
+
+            foreach (ProductCart p in list) {
+                totalSale += p.Price;
+            }
+
+            return totalSale;
         }
 
         // Método para agregar producto en el carrito.
