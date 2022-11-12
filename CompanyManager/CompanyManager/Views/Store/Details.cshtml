@@ -1,22 +1,37 @@
-﻿@model CompanyManager.ModelsView.ProductCart
+﻿@model CompanyManager.Models.ProductCart
 
 @{
     ViewData["Title"] = "Tienda";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="AddCart">
-    @*<img src="@Html.DisplayFor(model => model.Image)" class="card-img-top" alt="..." />*@
-    <input type="hidden" asp-for="Id" />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Details">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <h1 class="card-title">@Html.DisplayFor(model => model.Name)</h1>
-    <p class="fs-4 fw-bold">$@Html.DisplayFor(model => model.Price)</p>
+            <input type="hidden" asp-for="Id" />
 
-    <div class="form-group">
-        <label asp-for="Quantity" class="control-label"></label>
-        <input asp-for="Quantity" class="form-control" />
-        <span asp-validation-for="Quantity" class="text-danger"></span>
+            @*<img src="@Html.DisplayFor(model => model.Image)" class="card-img-top" alt="..." />*@
+
+            <div class="form-group">
+                <h1 class="card-title">@Html.DisplayFor(model => model.Name)</h1>
+            </div>
+    
+            <div class="form-group">
+                <p class="fs-4 fw-bold">$@Html.DisplayFor(model => model.UnitPrice)</p>
+            </div>
+    
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Agregar al carrito" />
+            </div>
+
+        </form>
     </div>
-
-    <input type="submit" class="btn btn-primary" value="Agregar al carrito " />
-</form>
+</div>

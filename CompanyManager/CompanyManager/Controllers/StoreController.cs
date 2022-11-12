@@ -1,5 +1,4 @@
 ﻿using CompanyManager.Models;
-using CompanyManager.ModelsView;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -27,16 +26,14 @@ namespace CompanyManager.Controllers
 
         // Vista detalle de producto.
         public async Task<IActionResult> Details(int? id) {
-            if (id == null || _context.Product == null)
-            {
+            if (id == null || _context.Product == null) {
                 return NotFound();
             }
 
             ProductCart productCart;
             var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (product == null)
-            {
+            if (product == null) {
                 return NotFound();
             } else {
                 // que es eso?
@@ -46,6 +43,7 @@ namespace CompanyManager.Controllers
                     Name = product.Name,
                     Quantity = 0,
                     Price = product.Price,
+                    UnitPrice = product.Price,
                 };
             }
 
@@ -59,22 +57,29 @@ namespace CompanyManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         // Al agregar producto en el carrito, luego de apretar en el botón agregar al carrito.
-        public async Task<IActionResult> AddCart(ProductCart model) {
-            var product = await _context
-               .Product
-               .Where(p => p.Id == model.Id)
-               .FirstOrDefaultAsync();
+        public async Task<IActionResult> Details(ProductCart model) {
+            var product = await _context.Product.Where(p => p.Id == model.Id).FirstOrDefaultAsync();
 
             if (product == null || _context.Product == null) {
                 return NotFound();
             }
-            else {
-                model.SetProducto(product);
-                this.AddProductToCart(model);
-            }
 
-            return RedirectToAction(nameof(Cart));
+            model.SetProducto(product);
+
+            if (ModelState.IsValid) {
+                
+                if (productHaveStock(model).Result) {
+                    this.AddProductToCart(model);
+                    return RedirectToAction(nameof(Cart));
+                }
+
+                // Error falta de stock.
+                ModelState.AddModelError("Quantity", ErrorViewModel.InsufficientStork);
+            }
+            
+            return View(model);
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
@@ -110,17 +115,28 @@ namespace CompanyManager.Controllers
             }
         }
 
+        // Método para validar que exista el stock del producto.
+        private async Task<Boolean> productHaveStock(ProductCart pCarrito) {
+            var p = await _context.Product.FirstOrDefaultAsync((p) => p.Id == pCarrito.Id);
+
+            if (p == null) {
+                return false;
+            }
+
+            return (p.Stock >= pCarrito.Quantity);
+        }
+
         // Método para agregar producto en el carrito.
-        private void AddProductToCart(ProductCart productoCarrito) {   
+        private void AddProductToCart(ProductCart pCarrito) {   
             var carrito = this.ProductsInCart;
-            var productoExistente = carrito.Where(o => o.Id == productoCarrito.Id).FirstOrDefault();
-            
+            var pExistente = carrito.Where(o => o.Id == pCarrito.Id).FirstOrDefault();
+
             //Si el producto no esta, lo agrego, sino remplazo la cantidad
-            if (productoExistente == null) {
-                carrito.Add(productoCarrito);
+            if (pExistente == null) {
+                carrito.Add(pCarrito);
             } else {
-                productoExistente.Quantity = productoCarrito.Quantity;
-                productoExistente.Price = productoCarrito.Price;
+                pExistente.Quantity = pCarrito.Quantity;
+                pExistente.Price = pCarrito.Price;
             }
 
             this.ProductsInCart = carrito;
