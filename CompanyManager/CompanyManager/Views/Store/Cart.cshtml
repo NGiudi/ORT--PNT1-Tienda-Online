@@ -24,7 +24,7 @@
                 <tr>
                     <td>@item.Name</td>
                     <td>@item.Quantity</td>
-                    <td>@item.Price</td>
+                    <td>@item.getTotalPrice()</td>
                     <td>
                         <a asp-action="DeleteProductInCart" asp-route-id="@item.Id">Eliminar</a>
                     </td>
