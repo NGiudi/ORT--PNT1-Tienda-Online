@@ -1,5 +1,6 @@
 ﻿using CompanyManager.Migrations;
 using CompanyManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -85,36 +86,43 @@ namespace CompanyManager.Controllers
         }
 
         // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
-        public async Task<IActionResult> Sale() {
-            // TODO: ver si está bien esta validacionde esta forma.
-            if (HttpContext.User.Identity.Name != null)
+        [Authorize]
+        public async Task<IActionResult> Sale()
+        {
+            User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
+            var sale = new Sale()
             {
-                var sale = new Sale()
-                {
-                    // TODO: no hardcodear la persona. 
-                    Buyer = new Person()
-                    {
-                        DocNumber = 39999999,
-                        Email = "nicolas.m.giudice@gmnail.com",
-                        LastName = "Giudice",
-                        Name = "Nicolás",
-                        Phone = "1167946707",
-                    },
-                    Products = this.ProductsInCart,
-                    TotalPrice = calculateTotalSale(this.ProductsInCart),
-                };
+                Buyer = findUser,               
+                Products = this.ProductsInCart,
+                TotalPrice = calculateTotalSale(this.ProductsInCart),
+            };
 
-                //TODO: manejar errores.
-                _context.Add(sale);
-                await _context.SaveChangesAsync();
+            //TODO: manejar errores.
+            _context.Add(sale);
+            await _context.SaveChangesAsync();
 
-                //TODO: Actualizar los stocks.
-                //TODO: Vaciar carrito.
-
-                return RedirectToAction(nameof(Index));
+            //Actualizar los stocks.
+            foreach (ProductCart p in sale.Products)
+            {
+                StockUpdate(p.ProductId, p.Quantity);
             }
 
-            return RedirectToAction(nameof(Cart));
+            //Vaciar carrito.
+            this.ProductsInCart = null;
+
+            return RedirectToAction(nameof(Index));
+
+        }
+        //actualizar stock
+        private async void StockUpdate(int id, int quantity)
+        {
+            Product? findProduct = _context.Product.Where(p => p.Id == id).FirstOrDefault();
+            if (findProduct != null)
+            {
+                findProduct.Stock-=quantity;
+                _context.Update(findProduct);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.

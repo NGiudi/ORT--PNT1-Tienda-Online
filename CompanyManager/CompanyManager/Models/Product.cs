@@ -36,4 +36,5 @@ namespace CompanyManager.Models
         [Range(0, int.MaxValue, ErrorMessage = ErrorViewModel.StockErrorRange)]
         public int Stock { get; set; }
     }
+
 }

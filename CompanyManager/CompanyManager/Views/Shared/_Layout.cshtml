@@ -58,11 +58,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Cart">Carrito</a>
                         </li>
-
+                        @if (Context.User.Identity.Name == null)
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Login">Login</a>
                         </li>
-
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Logout">logout</a>
                         </li>
