@@ -6,6 +6,7 @@
 - Porque el modelo de ProductCart tiene seteado el mismo id que el producto?
 - Como hacer que la data anotation solo sea para algunas pantallas.
 - Como ocultar el boton de logout si no hay usuario loguedao.
+- Como validamos que el usuario está deslogueado? yo use HttpContext.User.Identity.Name
 
 ## TODO List:
 - [X] Ver porque se puede agregar cantidades negativas o cero al agregar un producto en el carrito.
