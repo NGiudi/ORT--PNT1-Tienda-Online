@@ -65,6 +65,7 @@ namespace CompanyManager.Controllers
             if (ModelState.IsValid) {
                 
                 if (productHaveStock(model).Result) {
+                    model.Id = 0;
                     this.AddProductToCart(model);
                     return RedirectToAction(nameof(Cart));
                 }
@@ -177,7 +178,7 @@ namespace CompanyManager.Controllers
             var carrito = this.ProductsInCart;
             var pExistente = carrito.Where(o => o.ProductId == pCarrito.ProductId).FirstOrDefault();
 
-            //Si el producto no esta, lo agrego, sino remplazo la cantidad
+            // Si el producto no esta, lo agrego, sino remplazo la cantidad.
             if (pExistente == null) {
                 carrito.Add(pCarrito);
             } else {
