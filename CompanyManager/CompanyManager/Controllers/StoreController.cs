@@ -41,7 +41,7 @@ namespace CompanyManager.Controllers
             // que es eso?
             ProductCart productCart = new ProductCart()
             {
-                Id = product.Id,
+                ProductId = product.Id,
                 Name = product.Name,
                 Quantity = 0,
                 UnitPrice = product.Price,
@@ -59,6 +59,7 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Quantity");
             model.SetProducto(product);
 
             if (ModelState.IsValid) {
@@ -89,6 +90,7 @@ namespace CompanyManager.Controllers
             {
                 var sale = new Sale()
                 {
+                    // TODO: no hardcodear la persona. 
                     Buyer = new Person()
                     {
                         DocNumber = 39999999,
@@ -104,8 +106,9 @@ namespace CompanyManager.Controllers
                 //TODO: manejar errores.
                 _context.Add(sale);
                 await _context.SaveChangesAsync();
-                
-                //TODO: Actualizar los stocks. 
+
+                //TODO: Actualizar los stocks.
+                //TODO: Vaciar carrito.
 
                 return RedirectToAction(nameof(Index));
             }

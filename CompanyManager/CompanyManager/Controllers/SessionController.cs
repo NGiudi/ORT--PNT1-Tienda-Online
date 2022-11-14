@@ -35,8 +35,10 @@ namespace CompanyManager.Controllers
         [HttpPost]
         public IActionResult Login(User user) {
             var findUser = _context.User
-                .Where(item => item.Username == user.Username && item.Password == user.Password)
+                .Where(item => item.Email == user.Email && item.Password == user.Password)
                 .FirstOrDefault();
+
+            ModelState.Remove("Password");
 
             if (findUser != null) {
                 var claims = new List<Claim> {
@@ -50,9 +52,36 @@ namespace CompanyManager.Controllers
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
 
                 return UsersRedirect(findUser.Role);
-            } else {
-                return View();
             }
+
+            ModelState.AddModelError("Password", ErrorViewModel.InvalidLogin);
+            return View();
+        }
+
+        public IActionResult Register() {
+            return View();
+        }
+
+        // Al confirmar registro, luego de apretar el botón de iniciar sesión.
+        [HttpPost]
+        public async Task<IActionResult> Register(User user) {
+            // Validar mail repetido.
+            var findUser = _context.User
+                .Where(u => u.Email.Equals(user.Email))
+                .FirstOrDefault();
+
+            ModelState.Remove("Email");
+
+            // guardar usuario
+            if (findUser == null) {
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                Login(user);
+                return RedirectToAction("Index", "Store");
+            }
+            
+            ModelState.AddModelError("Email", ErrorViewModel.InvalidEmail);
+            return View(user);
         }
 
         // Al cerrar sesión, luego de apretar el botón de logout.
