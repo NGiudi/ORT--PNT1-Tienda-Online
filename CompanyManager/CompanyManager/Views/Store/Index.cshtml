@@ -4,19 +4,24 @@
     ViewData["Title"] = "Tienda";
 }
 
-<div class="container text-center">
+<div class="container">
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="card" style="width: 18rem;">
-                <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top" alt="...">
-            
-                <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                    <p class="fs-4 fw-bold">$@Html.DisplayFor(modelItem => item.Price)</p>
-
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Comprar</a>
+            <div class="col-lg-4 mb-3 d-flex align-items-stretch">
+                <div class="card w-100">
+                    <div class="card-body d-flex flex-column">
+                        <h2 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h2>
+                        <div class="h-75">
+                            <img src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top" alt="...">
+                        </div>
+                        <h5 class="card-text mb-4">@Html.DisplayFor(modelItem => item.Description)</h5>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h3 class="text-dark mb-0 fs-2 fw-bold">$@Html.DisplayFor(modelItem => item.Price)</h3>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Comprar</a>
+                        </div>
+                        <p class="text-muted mb-0">Stock Disponible: <span class="fw-bold">@Html.DisplayFor(modelItem => item.Stock)</span></p>
+                    </div>
                 </div>
             </div>
         }

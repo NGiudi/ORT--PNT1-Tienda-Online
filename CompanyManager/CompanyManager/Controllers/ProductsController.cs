@@ -134,7 +134,7 @@ namespace CompanyManager.Controllers
         }
 
         // Al eliminar producto, luego de apretar en el botón eliminar.
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -149,7 +149,7 @@ namespace CompanyManager.Controllers
                 _context.SaveChanges();
             }
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Store");
         }
     }
 }
