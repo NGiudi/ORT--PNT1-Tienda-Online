@@ -108,7 +108,7 @@ namespace CompanyManager.Controllers
             }
 
             //Vaciar carrito.
-            this.ProductsInCart = null;
+            this.ProductsInCart = new List<ProductCart>();
 
             return RedirectToAction(nameof(Index));
 

@@ -34,15 +34,13 @@ namespace CompanyManager.Controllers
         // Vista detalle de la venta.
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Sale == null)
-            {
+            if (id == null || _context.Sale == null) {
                 return NotFound();
             }
 
-            var sale = await _context.Sale
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sale == null)
-            {
+            var sale = await _context.Sale.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (sale == null) {
                 return NotFound();
             }
 
@@ -126,8 +124,8 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
-            var sale = await _context.Sale
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var sale = await _context.Sale.FirstOrDefaultAsync(m => m.Id == id);
+
             if (sale == null)
             {
                 return NotFound();
@@ -141,18 +139,27 @@ namespace CompanyManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Sale == null)
-            {
+            if (_context.Sale == null) {
                 return Problem("Entity set 'CMContext.Sale'  is null.");
             }
-            var sale = await _context.Sale.FindAsync(id);
-            if (sale != null)
-            {
+
+            var sale = await _context.Sale.FirstOrDefaultAsync(s => s.Id == id);
+
+            if (sale != null) {
+                DeleteProducsInSale(id);
                 _context.Sale.Remove(sale);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private void DeleteProducsInSale (int saleId) {
+            List<ProductCart> products = _context.ProductCart
+                .Where(pc => pc.SaleId == saleId)
+                .ToList();
+
+            _context.ProductCart.RemoveRange(products);
         }
     }
 }

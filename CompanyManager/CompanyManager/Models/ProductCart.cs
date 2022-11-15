@@ -10,6 +10,8 @@ namespace CompanyManager.Models
         
         public int ProductId { get; set; }
 
+        public int SaleId { get; set; }
+
         [Display(Name = "Cantidad")]
         [Range(1, int.MaxValue, ErrorMessage = ErrorViewModel.StockErrorRange)]
         public int Quantity { get; set; }
