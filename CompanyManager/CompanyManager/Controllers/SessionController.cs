@@ -45,8 +45,9 @@ namespace CompanyManager.Controllers
                     new Claim(ClaimTypes.Name, findUser.Id.ToString()),
                 };
 
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, findUser.Username));
                 claims.Add(new Claim(ClaimTypes.Role, findUser.Role.ToString()));
-                
+
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
