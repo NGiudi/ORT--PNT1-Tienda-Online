@@ -90,6 +90,7 @@ namespace CompanyManager.Controllers
         public async Task<IActionResult> Sale()
         {
             User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
+            
             var sale = new Sale()
             {
                 Buyer = findUser,               
@@ -97,14 +98,14 @@ namespace CompanyManager.Controllers
                 TotalPrice = calculateTotalSale(this.ProductsInCart),
             };
 
-            //TODO: manejar errores.
+            // TODO: manejar errores.
             _context.Add(sale);
             await _context.SaveChangesAsync();
 
-            //Actualizar los stocks.
+            // Actualizar los stocks.
             foreach (ProductCart p in sale.Products)
             {
-                StockUpdate(p.ProductId, p.Quantity);
+                UpdateStock(p.ProductId, p.Quantity);
             }
 
             //Vaciar carrito.
@@ -112,17 +113,6 @@ namespace CompanyManager.Controllers
 
             return RedirectToAction(nameof(Index));
 
-        }
-        //actualizar stock
-        private async void StockUpdate(int id, int quantity)
-        {
-            Product? findProduct = _context.Product.Where(p => p.Id == id).FirstOrDefault();
-            if (findProduct != null)
-            {
-                findProduct.Stock-=quantity;
-                _context.Update(findProduct);
-                await _context.SaveChangesAsync();
-            }
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
@@ -195,5 +185,19 @@ namespace CompanyManager.Controllers
 
             this.ProductsInCart = carrito;
         }
+        
+        // Método para quitar los productos comprados.
+        private async void UpdateStock(int id, int quantity)
+        {
+            Product? findProduct = _context.Product.Where(p => p.Id == id).FirstOrDefault();
+
+            if (findProduct != null)
+            {
+                findProduct.Stock -= quantity;
+                _context.Update(findProduct);
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
 using Microsoft.AspNetCore.Authorization;
+using CompanyManager.Migrations;
 
 namespace CompanyManager.Controllers
 {
@@ -147,17 +148,31 @@ namespace CompanyManager.Controllers
 
             if (sale != null) {
                 DeleteProducsInSale(id);
+
                 _context.Sale.Remove(sale);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
-        private void DeleteProducsInSale (int saleId) {
+        private void ReturnProductsToStock(List<ProductCart> pList) {
+            foreach (ProductCart pc in pList) {
+                Product? findProduct = _context.Product.Where(p => p.Id == pc.ProductId).FirstOrDefault();
+                
+                if (findProduct != null) {
+                    findProduct.Stock += pc.Quantity;
+                    _context.Product.Update(findProduct);
+                }
+            }
+        }
+        
+        private void DeleteProducsInSale(int saleId) {
             List<ProductCart> products = _context.ProductCart
                 .Where(pc => pc.SaleId == saleId)
                 .ToList();
+
+            ReturnProductsToStock(products);
 
             _context.ProductCart.RemoveRange(products);
         }
