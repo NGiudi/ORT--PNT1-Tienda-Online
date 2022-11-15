@@ -68,54 +68,7 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // Vista de edición de venta.
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Sale == null)
-            {
-                return NotFound();
-            }
 
-            var sale = await _context.Sale.FindAsync(id);
-            if (sale == null)
-            {
-                return NotFound();
-            }
-            return View(sale);
-        }
-
-        // Al editar venta, luego de apretar en el botón editar.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Sale sale)
-        {
-            if (id != sale.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(sale);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SaleExists(sale.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sale);
-        }
 
         // Vista de eliminar de venta.
         public async Task<IActionResult> Delete(int? id)
