@@ -99,17 +99,18 @@ namespace CompanyManager.Controllers
             };
 
             // TODO: manejar errores.
-            _context.Add(sale);
-            await _context.SaveChangesAsync();
-
-            // Actualizar los stocks.
-            foreach (ProductCart p in sale.Products)
+            if (sale.TotalPrice > 0)
             {
-                UpdateStock(p.ProductId, p.Quantity);
+                _context.Add(sale);
+                await _context.SaveChangesAsync();
+                // Actualizar los stocks.
+                foreach (ProductCart p in sale.Products)
+                {
+                    UpdateStock(p.ProductId, p.Quantity);
+                }
+                //Vaciar carrito.
+                this.ProductsInCart = new List<ProductCart>();
             }
-
-            //Vaciar carrito.
-            this.ProductsInCart = new List<ProductCart>();
 
             return RedirectToAction(nameof(Index));
 
@@ -177,12 +178,17 @@ namespace CompanyManager.Controllers
             var pExistente = carrito.Where(o => o.ProductId == pCarrito.ProductId).FirstOrDefault();
 
             // Si el producto no esta, lo agrego, sino remplazo la cantidad.
-            if (pExistente == null) {
-                carrito.Add(pCarrito);
-            } else {
-                pExistente.Quantity = pCarrito.Quantity;
+            if(pCarrito.Quantity > 0)
+            {
+                if (pExistente == null)
+                {
+                    carrito.Add(pCarrito);
+                }
+                else
+                {
+                    pExistente.Quantity = pCarrito.Quantity;
+                }
             }
-
             this.ProductsInCart = carrito;
         }
         
