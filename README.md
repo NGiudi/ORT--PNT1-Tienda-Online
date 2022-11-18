@@ -9,3 +9,4 @@
 - [ ] Poner el stock en el detalle del producto (dentro de la tienda).
 - [X] Redirigir a login al intentar confirmar comprar en el carrito si no esta logueado un usuario.
 - [X] No dejar confirmar el carrito si está vacio.
+- [ ] Mostrar la info de la venta en la lista de ventas"
