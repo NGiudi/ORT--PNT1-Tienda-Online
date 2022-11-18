@@ -16,3 +16,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.move-left {
+  margin-left: -70px;
+}

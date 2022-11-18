@@ -16,7 +16,7 @@ builder.Services.AddSession();
 // Tiene fecha de expiracion las cookies.
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option => {
-        option.LoginPath = "/Login";
+        option.LoginPath = "/Session/Login";
         option.ExpireTimeSpan = TimeSpan.FromDays(1);
         option.AccessDeniedPath = "/Store";
     });
