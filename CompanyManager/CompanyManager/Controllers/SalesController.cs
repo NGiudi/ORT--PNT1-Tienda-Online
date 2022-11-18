@@ -48,28 +48,6 @@ namespace CompanyManager.Controllers
             return View(sale);
         }
 
-        // Vista de creación de venta vacía.
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // Al crear venta, luego de apretar en el botón crear.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Sale sale)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(sale);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sale);
-        }
-
-
-
         // Vista de eliminar de venta.
         public async Task<IActionResult> Delete(int? id)
         {
