@@ -8,7 +8,7 @@
 <h1>Listado de productos</h1>
 
 <p>
-    <a asp-action="Create">Crear producto</a>
+    <a asp-action="Create" class="text-danger">Crear producto</a>
 </p>
 
 <table class="table">
@@ -52,9 +52,9 @@
                     @Html.DisplayFor(modelItem => item.Stock)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalle</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="text-danger">Detalle</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="text-danger">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger">Eliminar</a>
                 </td>
             </tr>
         }

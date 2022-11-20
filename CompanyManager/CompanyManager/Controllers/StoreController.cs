@@ -33,6 +33,22 @@ namespace CompanyManager.Controllers
             return price - (price * discount / 100);
         }
 
+        //Crea ViewBag del producto para mostrar los detalles
+        private void GenerateProductViewBag(Product product)
+        {
+            ViewBag.Description = product.Description;
+            if (product.Image != null)
+            {
+                ViewBag.Image = product.Image;
+            }
+            else
+            {
+                ViewBag.Image = "https://impulsapopular.com/wp-content/themes/impulsapopular/images/post-placeholder.png";
+            }
+            ViewBag.Stock = product.Stock;
+            ViewBag.OriginalPrice = product.Price;
+            ViewBag.Discount = product.Discount;
+        }
 
         // Vista detalle de producto.
         public async Task<IActionResult> Details(int? id) {
@@ -41,8 +57,7 @@ namespace CompanyManager.Controllers
             if (product == null) {
                 return NotFound();
             }
-
-            ViewBag.Stock = product.Stock;
+            GenerateProductViewBag(product);
 
             ProductCart productCart = new ProductCart()
             {
@@ -65,7 +80,7 @@ namespace CompanyManager.Controllers
             }
 
             ModelState.Remove("Quantity");
-            ViewBag.Stock = product.Stock;
+            GenerateProductViewBag(product);
             model.SetProducto(product);
 
             if (ModelState.IsValid) {
