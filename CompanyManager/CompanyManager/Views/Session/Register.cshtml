@@ -4,55 +4,61 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="row">
+<div class="form-container">
     <form asp-action="Register">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <input type="hidden" asp-for="Role" value="@UserRoles.BUYER" />
+        
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mt-4">
+                    <label asp-for="Name" class="control-label fw-bold fs-5 mb-1">Nombre</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger fs-6"></span>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label asp-for="Username" class="control-label">Nombre de usuario</label>
-            <input asp-for="Username" class="form-control" />
-            <span asp-validation-for="Username" class="text-danger"></span>
+            <div class="col-6">
+                <div class="form-group mt-4">
+                    <label asp-for="LastName" class="control-label fw-bold fs-5 mb-1">Apellido</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger fs-6"></span>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label asp-for="Password" class="control-label">Contraseña</label>
-            <input asp-for="Password" class="form-control" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Email" class="control-label">Email</label>
+        
+        <div class="form-group mt-3">
+            <label asp-for="Email" class="control-label fw-bold fs-5 mb-1">Email</label>
             <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="Email" class="text-danger fs-6"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="DocNumber" class="control-label">Documento</label>
+        <div class="form-group mt-3">
+            <label asp-for="DocNumber" class="control-label fw-bold fs-5 mb-1">Documento</label>
             <input asp-for="DocNumber" class="form-control" />
-            <span asp-validation-for="DocNumber" class="text-danger"></span>
+            <span asp-validation-for="DocNumber" class="text-danger fs-6"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Name" class="control-label">Nombre</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="LastName" class="control-label">Apellido</label>
-            <input asp-for="LastName" class="form-control" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Phone" class="control-label">Telefono</label>
+        <div class="form-group mt-3">
+            <label asp-for="Phone" class="control-label fw-bold fs-5 mb-1">Telefono</label>
             <input asp-for="Phone" class="form-control" />
-            <span asp-validation-for="Phone" class="text-danger"></span>
+            <span asp-validation-for="Phone" class="text-danger fs-6"></span>
         </div>
 
-        <input type="submit" value="Registrarse" />
+        <div class="form-group mt-3">
+            <label asp-for="Username" class="control-label fw-bold fs-5 mb-1">Nombre de usuario</label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger fs-6"></span>
+        </div>
+
+        <div class="small-box form-group mt-3">
+            <label asp-for="Password" class="control-label fw-bold fs-5 mb-1">Contraseña</label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger fs-6"></span>
+        </div>
+
+        <input class="btn btn-danger mt-4 w-100" type="submit" value="Registrarse" />
     </form>
 
 </div>
