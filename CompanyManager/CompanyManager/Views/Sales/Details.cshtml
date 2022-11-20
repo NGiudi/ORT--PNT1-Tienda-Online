@@ -4,53 +4,72 @@
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <h4>Venta #@Html.DisplayFor(model => model.Id)</h4>
-    <hr />
-
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Buyer.Email)
-        </dt>
-
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Buyer.Email)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Buyer.Name)
-        </dt>
-
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Buyer.Name)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Buyer.LastName)
-        </dt>
-
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Buyer.LastName)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-
-        <dd class="col-sm-10">
-            $ @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Products)
-        </dt>
-
-        <dd class="col-sm-10">
-            @*TODO*@
-        </dd>
-    </dl>
+<div class="d-flex align-items-center">
+    <a asp-action="Index" class="text-black">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>        
+    
+    <h2 class="fs-2 mb-0 ml-3">Venta #@Html.DisplayFor(model => model.Id)</h2>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
-</div>
+<h3 class="text-black-50 fs-4 mt-4">Datos del comprador</h3>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">
+        Nombre completo
+    </dt>
+
+    <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.Buyer.Name) @Html.DisplayFor(model => model.Buyer.LastName)
+    </dd>
+
+    <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.Buyer.Email)
+    </dt>
+
+    <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.Buyer.Email)
+    </dd>
+
+    <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.Buyer.Phone)
+    </dt>
+
+    <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.Buyer.Phone)
+    </dd>
+</dl>
+
+<h3 class="text-black-50 fs-4 mt-4">Listado de Productos</h3>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre del producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Product.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                <td>$ @Html.DisplayFor(modelItem => item.Product.Price)</td>
+                <td>$ @item.getTotalPrice()</td>
+            </tr>
+        }
+
+        <tr>
+            <td class="fw-bold">Total</td>
+            <td></td>
+            <td></td>
+            <td>$ @Html.DisplayFor(model => model.TotalPrice)</td>
+        </tr>
+    </tbody>
+</table>

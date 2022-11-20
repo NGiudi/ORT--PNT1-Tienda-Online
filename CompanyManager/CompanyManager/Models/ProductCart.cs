@@ -9,6 +9,8 @@ namespace CompanyManager.Models
         
         public int ProductId { get; set; }
 
+        public Product? Product { get; set; }
+
         public int SaleId { get; set; }
 
         [Display(Name = "Cantidad")]
@@ -16,7 +18,6 @@ namespace CompanyManager.Models
         public int Quantity { get; set; }
 
         public string? Name { get; set; }
-
 
         public float UnitPrice { get; set; }
 

@@ -17,7 +17,7 @@ namespace CompanyManager.Models
 
         [Display(Name = "Productos")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public IList<ProductCart>? Products { get; set; }
+        public List<ProductCart>? Products { get; set; }
 
         [Display(Name = "Total de la venta")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]

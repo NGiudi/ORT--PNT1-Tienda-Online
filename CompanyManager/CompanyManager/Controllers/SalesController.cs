@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using CompanyManager.Migrations;
 
 namespace CompanyManager.Controllers
 {
@@ -20,6 +22,13 @@ namespace CompanyManager.Controllers
             return _context.Sale.Any(e => e.Id == id);
         }
 
+        private async Task<Person> GetPersona(int id)
+        {
+            Person? person = await _context.User.FirstOrDefaultAsync(e => e.Id == id);
+
+            return person;
+        }
+
         // Vista de listado de ventas.
         public async Task<IActionResult> Index()
         {
@@ -33,13 +42,6 @@ namespace CompanyManager.Controllers
             return View(ventas);
         }
 
-        public async Task<Person> GetPersona(int id)
-        {
-            Person persona = await _context.User.FirstOrDefaultAsync(e => e.Id == id);
-
-            return persona;
-        }
-
         // Vista detalle de la venta.
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,10 +50,21 @@ namespace CompanyManager.Controllers
             }
 
             var sale = await _context.Sale.FirstOrDefaultAsync(m => m.Id == id);
-            GetPersona(sale.BuyerId);
 
             if (sale == null) {
                 return NotFound();
+            }
+
+            GetPersona(sale.BuyerId);
+
+            // get product cart list.
+            List<ProductCart>? list = await _context.ProductCart.Where(pc => pc.SaleId == id).ToListAsync();
+            sale.Products = list;
+
+            // get product item.
+            foreach (ProductCart pc in list) {
+                Product? product = await _context.Product.FirstOrDefaultAsync(p => p.Id == pc.ProductId);
+                pc.Product = product;
             }
 
             return View(sale);

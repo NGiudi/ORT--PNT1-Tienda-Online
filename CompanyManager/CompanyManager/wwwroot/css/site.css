@@ -22,12 +22,20 @@ body {
 }
 
 /* override boostrap styles */
+.fs-4 {
+    font-size: 20px !important;
+}
+
 .fs-5 {
     font-size: 14px !important;
 }
 
 .fs-6 {
     font-size: 12px !important;
+}
+
+.inline {
+    display: inline-block;
 }
 
 .form-container {
