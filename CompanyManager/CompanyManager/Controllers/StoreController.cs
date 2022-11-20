@@ -1,14 +1,8 @@
-﻿using CompanyManager.Migrations;
-using CompanyManager.Models;
+﻿using CompanyManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using System.Xml.Linq;
 
 namespace CompanyManager.Controllers
 {
@@ -25,11 +19,20 @@ namespace CompanyManager.Controllers
             var productsList = _context.Product.Where(p => p.Stock > 0);
 
             foreach (Product p in productsList) {
-                p.Price = p.Price - (p.Price * p.Discount / 100);
+               // p.Price = p.Price - (p.Price * p.Discount / 100);
+                p.Price = CalculateDiscount(p.Price, p.Discount);
             }
 
             return View(await productsList.ToListAsync());
         }
+
+        // Calcula el descuento
+
+        private float CalculateDiscount(float price, int discount)
+        {
+            return price - (price * discount / 100);
+        }
+
 
         // Vista detalle de producto.
         public async Task<IActionResult> Details(int? id) {
@@ -39,13 +42,14 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
-            // que es eso?
+            ViewBag.Stock = product.Stock;
+
             ProductCart productCart = new ProductCart()
             {
                 ProductId = product.Id,
                 Name = product.Name,
                 Quantity = 0,
-                UnitPrice = product.Price,
+                UnitPrice = CalculateDiscount(product.Price, product.Discount),
             };
             return View(productCart);
         }
@@ -61,6 +65,7 @@ namespace CompanyManager.Controllers
             }
 
             ModelState.Remove("Quantity");
+            ViewBag.Stock = product.Stock;
             model.SetProducto(product);
 
             if (ModelState.IsValid) {
@@ -93,7 +98,8 @@ namespace CompanyManager.Controllers
             
             var sale = new Sale()
             {
-                Buyer = findUser,               
+                Buyer = findUser,
+                BuyerId = findUser.Id,
                 Products = this.ProductsInCart,
                 TotalPrice = calculateTotalSale(this.ProductsInCart),
             };

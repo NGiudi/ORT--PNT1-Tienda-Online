@@ -5,24 +5,48 @@
 }
 
 <div>
-    <h4>Sale #@Html.DisplayFor(model => model.Id)</h4>
+    <h4>Venta #@Html.DisplayFor(model => model.Id)</h4>
     <hr />
 
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeletedAt)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Buyer.Email)
         </dt>
 
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeletedAt)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Buyer.Email)
         </dd>
 
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Buyer.Name)
+        </dt>
+
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Buyer.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Buyer.LastName)
+        </dt>
+
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Buyer.LastName)
+        </dd>
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TotalPrice)
         </dt>
 
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
+        <dd class="col-sm-10">
+            $ @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Products)
+        </dt>
+
+        <dd class="col-sm-10">
+            @*TODO*@
         </dd>
     </dl>
 </div>

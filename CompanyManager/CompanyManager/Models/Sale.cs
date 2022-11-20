@@ -1,5 +1,4 @@
-﻿using CompanyManager.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManager.Models
 {
@@ -12,8 +11,11 @@ namespace CompanyManager.Models
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public Person? Buyer { get; set; }
 
+        public int BuyerId { get; set; }
+
         public DateTime? DeletedAt { get; set; }
 
+        [Display(Name = "Productos")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public IList<ProductCart>? Products { get; set; }
 

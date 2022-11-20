@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using CompanyManager.Models;
-using System.Security.Principal;
 
 namespace CompanyManager.Controllers
 {

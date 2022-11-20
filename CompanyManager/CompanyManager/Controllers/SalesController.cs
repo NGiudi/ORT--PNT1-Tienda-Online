@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
 using Microsoft.AspNetCore.Authorization;
-using CompanyManager.Migrations;
 
 namespace CompanyManager.Controllers
 {
@@ -29,7 +23,21 @@ namespace CompanyManager.Controllers
         // Vista de listado de ventas.
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Sale.ToListAsync());
+            var ventas = await _context.Sale.ToListAsync();
+
+            // Asigna el usuario a la venta.
+            foreach (var vent in ventas)
+            {
+                GetPersona(vent.BuyerId);
+            }
+            return View(ventas);
+        }
+
+        public async Task<Person> GetPersona(int id)
+        {
+            Person persona = await _context.User.FirstOrDefaultAsync(e => e.Id == id);
+
+            return persona;
         }
 
         // Vista detalle de la venta.
@@ -40,6 +48,7 @@ namespace CompanyManager.Controllers
             }
 
             var sale = await _context.Sale.FirstOrDefaultAsync(m => m.Id == id);
+            GetPersona(sale.BuyerId);
 
             if (sale == null) {
                 return NotFound();
