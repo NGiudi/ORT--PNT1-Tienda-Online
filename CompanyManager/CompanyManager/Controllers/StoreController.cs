@@ -9,6 +9,7 @@ namespace CompanyManager.Controllers
     public class StoreController : Controller
     {
         private readonly CMContext _context;
+        private static int cartItems = 0;
 
         public StoreController(CMContext context) {
             _context = context;
@@ -19,7 +20,6 @@ namespace CompanyManager.Controllers
             var productsList = _context.Product.Where(p => p.Stock > 0);
 
             foreach (Product p in productsList) {
-               // p.Price = p.Price - (p.Price * p.Discount / 100);
                 p.Price = CalculateDiscount(p.Price, p.Discount);
             }
 
@@ -27,7 +27,6 @@ namespace CompanyManager.Controllers
         }
 
         // Calcula el descuento
-
         private float CalculateDiscount(float price, int discount)
         {
             return price - (price * discount / 100);
@@ -48,6 +47,11 @@ namespace CompanyManager.Controllers
             ViewBag.Stock = product.Stock;
             ViewBag.OriginalPrice = product.Price;
             ViewBag.Discount = product.Discount;
+        }
+
+        public static int ViewCartItems()
+        {
+            return cartItems;
         }
 
         // Vista detalle de producto.
@@ -124,6 +128,7 @@ namespace CompanyManager.Controllers
             {
                 _context.Add(sale);
                 await _context.SaveChangesAsync();
+                cartItems = 0;
                 // Actualizar los stocks.
                 foreach (ProductCart p in sale.Products)
                 {
@@ -146,6 +151,7 @@ namespace CompanyManager.Controllers
             if (productoExistente != null)
             {
                 carrito.Remove(productoExistente);
+                cartItems--;
                 this.ProductsInCart = carrito;
             }
 
@@ -194,7 +200,7 @@ namespace CompanyManager.Controllers
         }
 
         // Método para agregar producto en el carrito.
-        private void AddProductToCart(ProductCart pCarrito) {   
+        private void AddProductToCart(ProductCart pCarrito) {
             var carrito = this.ProductsInCart;
             var pExistente = carrito.Where(o => o.ProductId == pCarrito.ProductId).FirstOrDefault();
 
@@ -204,6 +210,7 @@ namespace CompanyManager.Controllers
                 if (pExistente == null)
                 {
                     carrito.Add(pCarrito);
+                    cartItems++;
                 }
                 else
                 {
