@@ -7,37 +7,47 @@
 
 <form asp-action="Details">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <input type="hidden" asp-for="ProductId" />
+
     <div class="container mt-5 mb-5">
         <div class="card">
             <div class="row">
                 <div class="col-md-6 text-center">
                     <img src="@ViewBag.Image" class="img-fluid" />
                 </div>
+
                 <div class="col-md-6">
                     <div class="product p-4">
                         <a asp-action="Index" class="text-secondary text-decoration-none">
                             <i class="fa-solid fa-chevron-left"></i> Volver
                         </a>
+
                         <div class="mt-4">
-                            <h5 class="fs-3 text-uppercase">@Html.DisplayFor(model => model.Name)</h5>
+                            <h5 class="fs-3 text-uppercase">@Model.Product.Name</h5>
+                            
                             @if (ViewBag.OriginalPrice != Model.UnitPrice)
                             {
                                 <p class="text-danger small">%@ViewBag.Discount OFF</p>
                                 <p class="fs-4 text-danger"><s>$@ViewBag.OriginalPrice</s></p>
                             }
+
                             <p class="fs-1 fw-bold mt-0">$@Html.DisplayFor(model => model.UnitPrice)</p>
                         </div>
+
                         <p class="about">@ViewBag.Description</p>
+
                         <p class="text-secondary fw-bold">@ViewBag.Stock Unidades Disponibles</p>
-                        <div class="input-group mb-3">
-                            <div class="col-xs-2">
+
+                        <div class="row mb-3">
+                            <div class="col-4">
                                 <input asp-for="Quantity" type="number" class="form-control" placeholder="Cantidad">
+                                <span asp-validation-for="Quantity" class="text-danger fs-6"></span>
                             </div>
-                            <div class="input-group-append">
+
+                            <div class="col-8">
                                 <input type="submit" class="btn btn-danger" value="Agregar al carrito" />
                             </div>
-                            <span asp-validation-for="Quantity" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

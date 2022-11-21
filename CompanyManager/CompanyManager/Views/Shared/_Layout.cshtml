@@ -23,8 +23,7 @@
             <div class="container-fluid">
                 <img height="60" src="https://i.postimg.cc/wBpc1yg3/logov2.png" alt="logo" />
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -64,15 +63,7 @@
                                 <i class="fa-solid fa-cart-shopping"></i> <small>@StoreController.ViewCartItems()</small>
                             </a>
                         </li>
-                        @if (!Context.User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Register">Registro</a>
-                            </li>
-                        }
+
                         @if (Context.User.Identity.IsAuthenticated)
                         {
                             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
@@ -81,14 +72,28 @@
                                         <a class="nav-link text-dark dropdown-toggle" id="menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             @User.FindFirst(ClaimTypes.NameIdentifier).Value
                                         </a>
+
                                         <ul class="dropdown-menu move-left" aria-labelledby="menu">
-                                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Purchases" asp-action="Index">Mis Compras</a></li>
-                                            <li><a class="nav-link text-danger" asp-area="" asp-controller="Session" asp-action="Logout">Cerrar Sesion</a></li>
+                                            <li>
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Purchases" asp-action="Index">Mis Compras</a>
+                                            </li>
+
+                                            <li>
+                                                <a class="nav-link text-danger" asp-area="" asp-controller="Session" asp-action="Logout">Cerrar Sesion</a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>
                             </div>
-                        }
+                        } else {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Login">Login</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Register">Registro</a>
+                            </li>
+                        }                        
                     </ul>
                 </div>
             </div>

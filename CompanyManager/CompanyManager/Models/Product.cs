@@ -35,6 +35,10 @@ namespace CompanyManager.Models
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         [Range(0, int.MaxValue, ErrorMessage = ErrorViewModel.StockErrorRange)]
         public int Stock { get; set; }
+
+        public float CalculateDiscount() {
+            return Price - (Price * Discount / 100);
+        }
     }
 
 }

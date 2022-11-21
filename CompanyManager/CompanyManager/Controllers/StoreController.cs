@@ -17,33 +17,21 @@ namespace CompanyManager.Controllers
 
         // Vista de listado de productos.
         public async Task<IActionResult> Index() {
-            var productsList = _context.Product.Where(p => p.Stock > 0);
-
-            foreach (Product p in productsList) {
-                p.Price = CalculateDiscount(p.Price, p.Discount);
-            }
-
-            return View(await productsList.ToListAsync());
-        }
-
-        // Calcula el descuento
-        private float CalculateDiscount(float price, int discount)
-        {
-            return price - (price * discount / 100);
+            var productsList = await _context.Product.Where(p => p.Stock > 0).ToListAsync();
+            return View(productsList);
         }
 
         //Crea ViewBag del producto para mostrar los detalles
         private void GenerateProductViewBag(Product product)
         {
             ViewBag.Description = product.Description;
-            if (product.Image != null)
-            {
+            
+            if (product.Image != null) {
                 ViewBag.Image = product.Image;
-            }
-            else
-            {
+            } else {
                 ViewBag.Image = "https://impulsapopular.com/wp-content/themes/impulsapopular/images/post-placeholder.png";
             }
+
             ViewBag.Stock = product.Stock;
             ViewBag.OriginalPrice = product.Price;
             ViewBag.Discount = product.Discount;
@@ -61,15 +49,17 @@ namespace CompanyManager.Controllers
             if (product == null) {
                 return NotFound();
             }
+
             GenerateProductViewBag(product);
 
             ProductCart productCart = new ProductCart()
             {
                 ProductId = product.Id,
-                Name = product.Name,
-                Quantity = 0,
-                UnitPrice = CalculateDiscount(product.Price, product.Discount),
+                Product = product,
+                Quantity = 1,
+                UnitPrice = product.CalculateDiscount(),
             };
+
             return View(productCart);
         }
 
@@ -79,7 +69,7 @@ namespace CompanyManager.Controllers
         public async Task<IActionResult> Details(ProductCart model) {
             var product = await _context.Product.Where(p => p.Id == model.ProductId).FirstOrDefaultAsync();
 
-            if (product == null || _context.Product == null) {
+            if (product == null) {
                 return NotFound();
             }
 
@@ -88,7 +78,6 @@ namespace CompanyManager.Controllers
             model.SetProducto(product);
 
             if (ModelState.IsValid) {
-                
                 if (productHaveStock(model).Result) {
                     model.Id = 0;
                     this.AddProductToCart(model);
@@ -105,8 +94,8 @@ namespace CompanyManager.Controllers
         // Vistas listado de productos en el carrito.
         public IActionResult Cart()
         {
-            var modelo = this.ProductsInCart;
-            return View(modelo);
+            var model = this.ProductsInCart;
+            return View(model);
         }
 
         // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
@@ -124,23 +113,21 @@ namespace CompanyManager.Controllers
                 SaleDate = DateTime.Now,
             };
 
-            // TODO: manejar errores.
-            if (sale.TotalPrice > 0)
-            {
+            if (sale.TotalPrice > 0) {
                 _context.Add(sale);
                 await _context.SaveChangesAsync();
                 cartItems = 0;
+
                 // Actualizar los stocks.
-                foreach (ProductCart p in sale.Products)
-                {
+                foreach (ProductCart p in sale.Products) {
                     UpdateStock(p.ProductId, p.Quantity);
                 }
+
                 //Vaciar carrito.
                 this.ProductsInCart = new List<ProductCart>();
             }
 
             return RedirectToAction(nameof(Index));
-
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
@@ -149,8 +136,7 @@ namespace CompanyManager.Controllers
             var productoExistente = carrito.Where(o => o.ProductId == id).FirstOrDefault();
 
             //Si el producto no esta, lo agrego, sino remplazo la cantidad
-            if (productoExistente != null)
-            {
+            if (productoExistente != null) {
                 carrito.Remove(productoExistente);
                 cartItems--;
                 this.ProductsInCart = carrito;
@@ -208,13 +194,11 @@ namespace CompanyManager.Controllers
             // Si el producto no esta, lo agrego, sino remplazo la cantidad.
             if(pCarrito.Quantity > 0)
             {
-                if (pExistente == null)
-                {
+                if (pExistente == null) {
                     carrito.Add(pCarrito);
                     cartItems++;
                 }
-                else
-                {
+                else {
                     pExistente.Quantity = pCarrito.Quantity;
                 }
             }
@@ -226,8 +210,7 @@ namespace CompanyManager.Controllers
         {
             Product? findProduct = _context.Product.Where(p => p.Id == id).FirstOrDefault();
 
-            if (findProduct != null)
-            {
+            if (findProduct != null) {
                 findProduct.Stock -= quantity;
                 _context.Update(findProduct);
                 await _context.SaveChangesAsync();
