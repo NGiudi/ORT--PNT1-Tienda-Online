@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyManager.Migrations
 {
     [DbContext(typeof(CMContext))]
-    [Migration("20221112214911_sales")]
-    partial class sales
+    [Migration("20221121032940_migracion")]
+    partial class migracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,19 +101,21 @@ namespace CompanyManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("REAL");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SaleId")
+                    b.Property<int>("SaleId")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("UnitPrice")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("SaleId");
 
@@ -129,7 +131,7 @@ namespace CompanyManager.Migrations
                     b.Property<int>("BuyerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTime?>("SaleDate")
                         .HasColumnType("TEXT");
 
                     b.Property<float>("TotalPrice")
@@ -167,9 +169,19 @@ namespace CompanyManager.Migrations
 
             modelBuilder.Entity("CompanyManager.Models.ProductCart", b =>
                 {
+                    b.HasOne("CompanyManager.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CompanyManager.Models.Sale", null)
                         .WithMany("Products")
-                        .HasForeignKey("SaleId");
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CompanyManager.Models.Sale", b =>

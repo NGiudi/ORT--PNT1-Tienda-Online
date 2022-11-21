@@ -121,6 +121,7 @@ namespace CompanyManager.Controllers
                 BuyerId = findUser.Id,
                 Products = this.ProductsInCart,
                 TotalPrice = calculateTotalSale(this.ProductsInCart),
+                SaleDate = DateTime.Now,
             };
 
             // TODO: manejar errores.

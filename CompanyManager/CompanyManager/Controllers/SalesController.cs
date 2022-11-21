@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using CompanyManager.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using CompanyManager.Migrations;
 
 namespace CompanyManager.Controllers
 {
@@ -22,7 +20,7 @@ namespace CompanyManager.Controllers
             return _context.Sale.Any(e => e.Id == id);
         }
 
-        private async Task<Person> GetPersona(int id)
+        private async Task<Person> GetPerson(int id)
         {
             Person? person = await _context.User.FirstOrDefaultAsync(e => e.Id == id);
 
@@ -37,7 +35,7 @@ namespace CompanyManager.Controllers
             // Asigna el usuario a la venta.
             foreach (var vent in ventas)
             {
-                GetPersona(vent.BuyerId);
+                GetPerson(vent.BuyerId);
             }
             return View(ventas);
         }
@@ -55,7 +53,7 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
-            GetPersona(sale.BuyerId);
+            GetPerson(sale.BuyerId);
 
             // get product cart list.
             List<ProductCart>? list = await _context.ProductCart.Where(pc => pc.SaleId == id).ToListAsync();

@@ -105,13 +105,15 @@ namespace CompanyManager.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SaleId")
+                    b.Property<int>("SaleId")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("UnitPrice")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("SaleId");
 
@@ -127,7 +129,7 @@ namespace CompanyManager.Migrations
                     b.Property<int>("BuyerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTime?>("SaleDate")
                         .HasColumnType("TEXT");
 
                     b.Property<float>("TotalPrice")
@@ -165,9 +167,19 @@ namespace CompanyManager.Migrations
 
             modelBuilder.Entity("CompanyManager.Models.ProductCart", b =>
                 {
+                    b.HasOne("CompanyManager.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CompanyManager.Models.Sale", null)
                         .WithMany("Products")
-                        .HasForeignKey("SaleId");
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CompanyManager.Models.Sale", b =>
