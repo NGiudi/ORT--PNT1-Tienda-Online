@@ -23,12 +23,6 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="@Url.Content(Model.Image)" width="300" height="200" />
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Discount)
         </dt>
         <dd class = "col-sm-10">
@@ -51,5 +45,5 @@
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Volver</a>
+    <a asp-action="Index" class="text-danger">Volver</a>
 </div>

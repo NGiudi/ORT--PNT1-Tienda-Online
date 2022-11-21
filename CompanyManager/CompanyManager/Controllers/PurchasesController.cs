@@ -14,24 +14,18 @@ namespace CompanyManager.Controllers
             _context = context;
         }
 
-        private async Task<Person> GetPerson(int id)
-        {
-            Person? person = await _context.User.FirstOrDefaultAsync(e => e.Id == id);
-
-            return person;
-        }
-
         // Vista listado de compras del usuario.
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.Name);
-            var compras = await _context.Sale.Where(o => o.BuyerId == int.Parse(userId)).ToListAsync();
+            var purchases = await _context.Sale.Where(o => o.BuyerId == int.Parse(userId)).ToListAsync();
 
-            foreach (var c in compras)
+            foreach (var p in purchases)
             {
-                GetPerson(c.BuyerId);
+                var buyer = await _context.User.FirstOrDefaultAsync(e => e.Id == p.BuyerId);
+                p.Buyer = buyer;
             }
-            return View(compras);
+            return View(purchases);
         }
 
         // Vista detalle de la venta.
@@ -47,7 +41,8 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
-            GetPerson(sale.BuyerId);
+            var buyer = await _context.User.FirstOrDefaultAsync(e => e.Id == sale.BuyerId);
+            sale.Buyer = buyer;
 
             // get product cart list.
             List<ProductCart>? list = await _context.ProductCart.Where(pc => pc.SaleId == id).ToListAsync();

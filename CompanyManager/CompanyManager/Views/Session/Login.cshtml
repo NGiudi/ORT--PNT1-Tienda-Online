@@ -16,13 +16,13 @@
 
         <div class="mt-2 form-group">
             <label asp-for="Password" class="control-label fw-bold fs-5 mb-1">Contraseña</label>
-            <input asp-for="Password" class="form-control" type="password" />
+            <input asp-for="Password" type="password" class="form-control" />
             <span asp-validation-for="Password" class="text-danger fs-6"></span>
         </div>
 
         <div class="mt-2">
             <span>¿Aún no tienes una cuenta?</span>
-            <a asp-action="Register">Registrarse</a>
+            <a asp-action="Register" class="text-danger">Registrarse</a>
         </div>
 
         <input class="btn btn-danger mt-4 w-100"  type="submit" value="Iniciar sesión" />

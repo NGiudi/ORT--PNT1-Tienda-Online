@@ -24,14 +24,9 @@ namespace CompanyManager.Controllers
         //Crea ViewBag del producto para mostrar los detalles
         private void GenerateProductViewBag(Product product)
         {
+            ViewBag.Name = product.Name;
             ViewBag.Description = product.Description;
-            
-            if (product.Image != null) {
-                ViewBag.Image = product.Image;
-            } else {
-                ViewBag.Image = "https://impulsapopular.com/wp-content/themes/impulsapopular/images/post-placeholder.png";
-            }
-
+            ViewBag.Image = product.Image;
             ViewBag.Stock = product.Stock;
             ViewBag.OriginalPrice = product.Price;
             ViewBag.Discount = product.Discount;
@@ -80,12 +75,12 @@ namespace CompanyManager.Controllers
             if (ModelState.IsValid) {
                 if (productHaveStock(model).Result) {
                     model.Id = 0;
-                    this.AddProductToCart(model);
+                    AddProductToCart(model);
                     return RedirectToAction(nameof(Cart));
                 }
 
                 // Error falta de stock.
-                ModelState.AddModelError("Quantity", ErrorViewModel.InsufficientStork);
+                ModelState.AddModelError("Quantity", ErrorViewModel.InsufficientStock);
             }
             
             return View(model);
@@ -94,7 +89,7 @@ namespace CompanyManager.Controllers
         // Vistas listado de productos en el carrito.
         public IActionResult Cart()
         {
-            var model = this.ProductsInCart;
+            var model = ProductsInCart;
             return View(model);
         }
 
@@ -108,8 +103,8 @@ namespace CompanyManager.Controllers
             {
                 Buyer = findUser,
                 BuyerId = findUser.Id,
-                Products = this.ProductsInCart,
-                TotalPrice = calculateTotalSale(this.ProductsInCart),
+                Products = ProductsInCart,
+                TotalPrice = calculateTotalSale(ProductsInCart),
                 SaleDate = DateTime.Now,
             };
 
@@ -124,7 +119,7 @@ namespace CompanyManager.Controllers
                 }
 
                 //Vaciar carrito.
-                this.ProductsInCart = new List<ProductCart>();
+                ProductsInCart = new List<ProductCart>();
             }
 
             return RedirectToAction(nameof(Index));
@@ -132,14 +127,14 @@ namespace CompanyManager.Controllers
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
         public IActionResult DeleteProductInCart(int id) {
-            var carrito = this.ProductsInCart;
+            var carrito = ProductsInCart;
             var productoExistente = carrito.Where(o => o.ProductId == id).FirstOrDefault();
 
             //Si el producto no esta, lo agrego, sino remplazo la cantidad
             if (productoExistente != null) {
                 carrito.Remove(productoExistente);
                 cartItems--;
-                this.ProductsInCart = carrito;
+                ProductsInCart = carrito;
             }
 
             return RedirectToAction(nameof(Cart));
@@ -188,7 +183,7 @@ namespace CompanyManager.Controllers
 
         // Método para agregar producto en el carrito.
         private void AddProductToCart(ProductCart pCarrito) {
-            var carrito = this.ProductsInCart;
+            var carrito = ProductsInCart;
             var pExistente = carrito.Where(o => o.ProductId == pCarrito.ProductId).FirstOrDefault();
 
             // Si el producto no esta, lo agrego, sino remplazo la cantidad.
@@ -202,7 +197,7 @@ namespace CompanyManager.Controllers
                     pExistente.Quantity = pCarrito.Quantity;
                 }
             }
-            this.ProductsInCart = carrito;
+            ProductsInCart = carrito;
         }
         
         // Método para quitar los productos comprados.

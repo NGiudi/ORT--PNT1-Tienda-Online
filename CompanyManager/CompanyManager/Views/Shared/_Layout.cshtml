@@ -21,7 +21,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <img height="60" src="https://i.postimg.cc/wBpc1yg3/logov2.png" alt="logo" />
+                <img height="60" src="https://i.postimg.cc/ncxQgvNy/logo.png" alt="logo" />
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,27 +30,27 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Index">Tienda</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Store" asp-action="Index">Tienda</a>
                         </li>
 
                         @if (User.IsInRole("ADMIN") || User.IsInRole("SELLER"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Productos</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Products" asp-action="Index">Productos</a>
                             </li>
                         }
 
                         @if (User.IsInRole("ADMIN"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a>
                             </li>
                         }
 
                         @if (User.IsInRole("ADMIN") || User.IsInRole("SELLER"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Sales" asp-action="Index">Ventas</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Sales" asp-action="Index">Ventas</a>
                             </li>
                         }
                     </ul>
@@ -59,7 +59,7 @@
                 <div>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Cart">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Store" asp-action="Cart">
                                 <i class="fa-solid fa-cart-shopping"></i> <small>@StoreController.ViewCartItems()</small>
                             </a>
                         </li>
@@ -69,7 +69,7 @@
                             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
                                 <ul class="navbar-nav">
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link text-dark dropdown-toggle" id="menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a class="nav-link text-light dropdown-toggle" id="menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             @User.FindFirst(ClaimTypes.NameIdentifier).Value
                                         </a>
 
@@ -87,11 +87,11 @@
                             </div>
                         } else {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Login">Login</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Session" asp-action="Login">Login</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="Register">Registro</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Session" asp-action="Register">Registro</a>
                             </li>
                         }                        
                     </ul>
