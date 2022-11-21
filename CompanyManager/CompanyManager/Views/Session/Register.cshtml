@@ -54,17 +54,16 @@
 
         <div class="small-box form-group mt-3">
             <label asp-for="Password" class="control-label fw-bold fs-5 mb-1">Contraseña</label>
-            <input asp-for="Password" class="form-control" />
+            <input asp-for="Password" class="form-control" type="password" />
             <span asp-validation-for="Password" class="text-danger fs-6"></span>
         </div>
 
         <input class="btn btn-danger mt-4 w-100" type="submit" value="Registrarse" />
     </form>
-
 </div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+}

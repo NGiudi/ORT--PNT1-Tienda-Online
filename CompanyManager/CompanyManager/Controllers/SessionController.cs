@@ -30,11 +30,11 @@ namespace CompanyManager.Controllers
             return View();
         }
 
-        // Al iniciar sesión, luego de apretar el botón de iniciar sesión.
+        // Al iniciar sesión, luego de compleatar el formulario de login.
         [HttpPost]
         public IActionResult Login(User user) {
             var findUser = _context.User
-                .Where(item => item.Email == user.Email && item.Password == user.Password)
+                .Where(dbUser => dbUser.Email == user.Email && dbUser.Password == user.Password)
                 .FirstOrDefault();
 
             ModelState.Remove("Password");
@@ -62,7 +62,7 @@ namespace CompanyManager.Controllers
             return View();
         }
 
-        // Al confirmar registro, luego de apretar el botón de iniciar sesión.
+        // Al confirmar registro, luego de completar el formulario de registro.
         [HttpPost]
         public async Task<IActionResult> Register(User user) {
             // Validar mail repetido.
@@ -72,11 +72,12 @@ namespace CompanyManager.Controllers
 
             ModelState.Remove("Email");
 
-            // guardar usuario
+            // Guardar usuario.
             if (findUser == null) {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 Login(user);
+
                 return RedirectToAction("Index", "Store");
             }
             

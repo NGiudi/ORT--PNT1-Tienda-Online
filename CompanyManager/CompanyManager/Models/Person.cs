@@ -15,19 +15,19 @@ namespace CompanyManager.Models
         [MaxLength(50, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Display(Name = "Apellido")]
         [MaxLength(15, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Display(Name = "Nombre")]
         [MaxLength(15, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Display(Name = "Teléfono")]
         [MinLength(7, ErrorMessage = ErrorViewModel.MinCharacters)]
