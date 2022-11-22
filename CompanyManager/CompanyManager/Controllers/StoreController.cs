@@ -73,12 +73,16 @@ namespace CompanyManager.Controllers
             model.SetProducto(product);
 
             if (ModelState.IsValid) {
-                if (productHaveStock(model).Result) {
+                if (productHaveStock(model).Result && model.Quantity > 0) {
                     model.Id = 0;
                     AddProductToCart(model);
                     return RedirectToAction(nameof(Cart));
                 }
-
+                if(model.Quantity < 1)
+                {
+                    //Error cantidad invalida
+                    ModelState.AddModelError("Quantity", ErrorViewModel.InvalidQuantity);
+                }
                 // Error falta de stock.
                 ModelState.AddModelError("Quantity", ErrorViewModel.InsufficientStock);
             }
@@ -98,7 +102,7 @@ namespace CompanyManager.Controllers
         public async Task<IActionResult> Sale()
         {
             User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
-            
+
             var sale = new Sale()
             {
                 Buyer = findUser,
@@ -111,7 +115,6 @@ namespace CompanyManager.Controllers
             if (sale.TotalPrice > 0) {
                 _context.Add(sale);
                 await _context.SaveChangesAsync();
-                cartItems = 0;
 
                 // Actualizar los stocks.
                 foreach (ProductCart p in sale.Products) {
@@ -120,6 +123,7 @@ namespace CompanyManager.Controllers
 
                 //Vaciar carrito.
                 ProductsInCart = new List<ProductCart>();
+                cartItems = 0;
             }
 
             return RedirectToAction(nameof(Index));

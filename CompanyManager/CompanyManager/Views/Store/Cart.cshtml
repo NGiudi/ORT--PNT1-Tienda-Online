@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ProductCart>
+@using CompanyManager.Controllers
 
 @{
     ViewData["Title"] = "Index";
@@ -33,5 +34,15 @@
         </tbody>
     </table>
 
-    <a asp-action="Sale" class="btn btn-danger">Confirmar compra</a>
+    <div class="text-end">
+        <a asp-action="Index" class="btn btn-danger text-decoration-none">
+            <i class="fa-solid fa-cart-shopping"></i> Seguir Comprando
+        </a>
+        @if (StoreController.ViewCartItems() > 0)
+        {
+            <a asp-action="Sale" class="btn btn-success">
+                <i class="fa-solid fa-money-bill"></i> Confirmar compra
+            </a>
+        }
+    </div>
 </div>
