@@ -6,5 +6,6 @@
 
 ## TODO List:
 - [ ] agregar forma de pago
-- [ ] mostrar el total de vendidos.
+- [X] mostrar el total de vendidos.
+- [X] mostrar las ventas que incluyan un producto en particular.
 - [ ] Log del stock.
