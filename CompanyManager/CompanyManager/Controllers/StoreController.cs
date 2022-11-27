@@ -16,9 +16,16 @@ namespace CompanyManager.Controllers
         }
 
         // Vista de listado de productos.
-        public async Task<IActionResult> Index() {
-            var productsList = await _context.Product.Where(p => p.Stock > 0).ToListAsync();
-            return View(productsList);
+        public async Task<IActionResult> Index(string search)
+        {
+            var productsList = from p in _context.Product select p;
+
+            if (search != null)
+            {
+                productsList = productsList.Where(p => p.Name.ToLower()!.Contains(search.ToLower()));
+            }
+            productsList = productsList.Where(p => p.Stock > 0);
+            return View(await productsList.ToListAsync());
         }
 
         //Crea ViewBag del producto para mostrar los detalles
