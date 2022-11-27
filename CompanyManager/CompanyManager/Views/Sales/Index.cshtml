@@ -4,7 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Listado de ventas</h1>
+<h1>Listado de ventas
+    @if(ViewBag.Product != null){
+        <span> - </span><span class="text-danger">@ViewBag.Product</span>
+    }
+</h1>
 
 
 <table class="table">

@@ -28,13 +28,16 @@ namespace CompanyManager.Models
         public float Price { get; set; }
         
         [Display(Name = "Descuento")]
-        [Range(0, 100, ErrorMessage = ErrorViewModel.PorcentRange)]
+        [Range(0, 99, ErrorMessage = ErrorViewModel.PorcentRange)]
         public int Discount { get; set; }
 
         [Display(Name = "Stock")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         [Range(0, int.MaxValue, ErrorMessage = ErrorViewModel.StockErrorRange)]
         public int Stock { get; set; }
+
+        [Display(Name = "Unidades Vendidas")]
+        public int SoldItems { get; set; } = 0;
 
         public float CalculateDiscount() {
             return Price - (Price * Discount / 100);

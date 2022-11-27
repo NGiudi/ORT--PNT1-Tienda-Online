@@ -34,11 +34,20 @@
         <dd class = "col-sm-10">
             $ @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Stock)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Stock)
+        </dd>
+        <dt class="col-sm-2">
+            <form asp-controller="Sales" asp-action="Index">
+                <input type="hidden" name="Id" asp-for="Id" />
+                <button type="submit" class="btn btn-link p-0 text-danger">@Html.DisplayNameFor(model => model.SoldItems)</button>
+            </form>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SoldItems)
         </dd>
     </dl>
 </div>

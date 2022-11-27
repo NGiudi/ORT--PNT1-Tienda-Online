@@ -21,9 +21,15 @@ namespace CompanyManager.Controllers
         }
 
         // Vista de listado de ventas.
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var sales = await _context.Sale.ToListAsync();
+            var sales = from s in _context.Sale select s;
+            if (id != null)
+            {
+                var product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
+                ViewBag.Product = product.Name;
+                sales = sales.Where(s => s.Products.Any(pc => pc.ProductId == id));
+            }
 
             // Asigna el usuario a la venta.
             foreach (var s in sales)
@@ -31,7 +37,7 @@ namespace CompanyManager.Controllers
                 var buyer = await _context.User.FirstOrDefaultAsync(e => e.Id == s.BuyerId);
                 s.Buyer = buyer;
             }
-            return View(sales);
+            return View(await sales.ToListAsync());
         }
 
         // Vista detalle de la venta.
@@ -108,6 +114,7 @@ namespace CompanyManager.Controllers
                 
                 if (findProduct != null) {
                     findProduct.Stock += pc.Quantity;
+                    findProduct.SoldItems -= pc.Quantity;
                     _context.Product.Update(findProduct);
                 }
             }

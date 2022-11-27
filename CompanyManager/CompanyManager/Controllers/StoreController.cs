@@ -211,6 +211,7 @@ namespace CompanyManager.Controllers
 
             if (findProduct != null) {
                 findProduct.Stock -= quantity;
+                findProduct.SoldItems += quantity;
                 _context.Update(findProduct);
                 await _context.SaveChangesAsync();
             }
