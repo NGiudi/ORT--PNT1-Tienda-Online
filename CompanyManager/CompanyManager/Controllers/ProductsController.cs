@@ -56,6 +56,11 @@ namespace CompanyManager.Controllers
             if (ModelState.IsValid) {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+
+                var log = StocksController.CreateStockLog(product, product.Stock, "Nuevo Producto");
+                _context.Stock.Add(log);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -88,11 +93,17 @@ namespace CompanyManager.Controllers
                 return NotFound();
             }
 
+
+            var lastStockLog = _context.Stock.OrderBy(o => o.UpdatedAt).Where(s => s.ProductId == id).Last();
+            int updatedQuantity = product.Stock - lastStockLog.CurrentStock;
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(product);
+                    var log = StocksController.CreateStockLog(product, updatedQuantity, "Producto Editado");
+                    _context.Stock.Add(log);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

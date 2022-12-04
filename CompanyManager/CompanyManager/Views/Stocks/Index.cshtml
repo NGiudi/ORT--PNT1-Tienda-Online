@@ -1,0 +1,51 @@
+﻿@model IEnumerable<CompanyManager.Models.Stock>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex align-items-center">
+    <a asp-area="" onclick="history.go(-1);" class="text-black"><i class="fa-solid fa-chevron-left"></i></a>
+    <h3>Log de Stock - <span class="text-danger">@ViewBag.Product</span></h3>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reason)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockUpdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentStock)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @if(item.StockUpdate > 0){
+                        <span class="text-success"><i class="fa-solid fa-arrow-up"></i> @Html.DisplayFor(modelItem => item.StockUpdate)</span>
+                }else{
+                        <span class="text-danger"><i class="fa-solid fa-arrow-down"></i> @Html.DisplayFor(modelItem => item.StockUpdate)</span>
+                }
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.CurrentStock)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

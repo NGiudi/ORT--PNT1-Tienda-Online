@@ -31,4 +31,6 @@ using CompanyManager.Models;
         public DbSet<CompanyManager.Models.User> User { get; set; }
 
         public DbSet<CompanyManager.Models.Sale> Sale { get; set; }
+
+        public DbSet<CompanyManager.Models.Stock> Stock { get; set; }
     }

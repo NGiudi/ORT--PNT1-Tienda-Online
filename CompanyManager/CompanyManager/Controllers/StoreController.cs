@@ -219,6 +219,8 @@ namespace CompanyManager.Controllers
             if (findProduct != null) {
                 findProduct.Stock -= quantity;
                 findProduct.SoldItems += quantity;
+                var log = StocksController.CreateStockLog(findProduct, quantity*-1, "Venta");
+                _context.Stock.Add(log);
                 _context.Update(findProduct);
                 await _context.SaveChangesAsync();
             }
