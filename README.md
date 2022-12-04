@@ -8,4 +8,4 @@
 - [ ] agregar forma de pago
 - [X] mostrar el total de vendidos.
 - [X] mostrar las ventas que incluyan un producto en particular.
-- [ ] Log del stock.
+- [X] Log del stock.
