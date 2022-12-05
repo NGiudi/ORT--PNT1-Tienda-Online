@@ -226,5 +226,9 @@ namespace CompanyManager.Controllers
             }
         }
 
-    }
+        public async Task<IActionResult> Payment()
+        {
+            return View();
+        }
+     }
 }
