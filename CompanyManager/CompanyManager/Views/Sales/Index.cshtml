@@ -3,12 +3,21 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="d-flex align-items-center">
+    <a asp-area="" onclick="window.history.go(-1);return false;" class="text-black">
+        <i class="fa-solid fa-chevron-left"></i>
+    </a>
+    <h1>
+        Listado de ventas
+        @if (ViewBag.Product != null)
+        {
+            <span> - </span>
 
-<h1>Listado de ventas
-    @if(ViewBag.Product != null){
-        <span> - </span><span class="text-danger">@ViewBag.Product</span>
-    }
-</h1>
+            <span class="text-danger">@ViewBag.Product</span>
+        }
+    </h1>
+</div>
+
 
 
 <table class="table">
