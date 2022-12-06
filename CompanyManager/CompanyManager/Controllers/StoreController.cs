@@ -106,12 +106,19 @@ namespace CompanyManager.Controllers
 
         // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
         [Authorize]
-        public async Task<IActionResult> Sale()
+        [HttpPost]
+        public async Task<IActionResult> Payment(Sale s)
         {
+
+            if (ModelState.IsValid)
+            {
+
+
             User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
 
             var sale = new Sale()
             {
+
                 Buyer = findUser,
                 BuyerId = findUser.Id,
                 Products = ProductsInCart,
@@ -134,6 +141,8 @@ namespace CompanyManager.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+            }
+            return View(s);
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
@@ -230,5 +239,5 @@ namespace CompanyManager.Controllers
         {
             return View();
         }
-     }
+    }
 }

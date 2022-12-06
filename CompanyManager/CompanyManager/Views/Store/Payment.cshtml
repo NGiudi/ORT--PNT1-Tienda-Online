@@ -1,4 +1,5 @@
-﻿<section class="p-4 p-md-5">
+﻿@model CompanyManager.Models.Sale
+<section class="p-4 p-md-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
             <div class="card rounded-3">
@@ -6,40 +7,42 @@
                     <div class="text-center mb-4">
                         <h3>Realizar Pago</h3>
                     </div>
-                    <form action="">
+                    <form asp-action="Payment">
+                        <div asp-validation-summary ="ModelOnly"></div>
                         <p class="fw-bold mb-4">Agregar nueva Tarjeta:</p>
 
                         <div class="form-outline mb-4">
-                            <input type="text" id="formControlLgXsd" class="form-control form-control-lg" />
-                            <label class="form-label" for="formControlLgXsd">Nombre de la Tarjeta</label>
+                            <label asp-for="CardNumber" class="form-label" for="formControlLgXsd">Numero de la tarjeta</label>
+                            <input asp-for="CardNumber" type="text" id="formControlLgXsd" class="form-control form-control-lg" />
+                            <span asp-validation-for="CardNumber"></span>
                         </div>
 
                         <div class="row mb-4">
                             <div class="col-7">
                                 <div class="form-outline">
+                                    <label class="form-label" for="formControlLgXM">Nombre y Apellido</label>
                                     <input type="text" id="formControlLgXM" class="form-control form-control-lg" />
-                                    <label class="form-label" for="formControlLgXM">Numero de Tarjeta</label>
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-outline">
-                                    <input type="password" id="formControlLgExpk" class="form-control form-control-lg" placeholder="MM/YYYY" />
                                     <label class="form-label" for="formControlLgExpk">Vencimiento</label>
+                                    <input type="password" id="formControlLgExpk" class="form-control form-control-lg" placeholder="MM/YYYY" />
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="form-outline">
-                                    <input type="password" id="formControlLgcvv" class="form-control form-control-lg" placeholder="CVV" />
                                     <label class="form-label" for="formControlLgcvv">CVV</label>
+                                    <input type="password" id="formControlLgcvv" class="form-control form-control-lg" placeholder="CVV" />
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-center">
                             <a asp-area="" onclick="history.go(-1);" class="btn btn-danger btn-lg btn-block"><i class="fa-solid fa-chevron-left"></i> Volver</a>
-                            <a asp-action="Sale" class="btn btn-success btn-lg btn-block">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">
                                 <i class="fa-solid fa-money-bill"></i> Confirmar Compra
-                            </a>
+                            </button>
                         </div>
                     </form>
                 </div>
