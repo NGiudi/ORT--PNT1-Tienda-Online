@@ -107,41 +107,35 @@ namespace CompanyManager.Controllers
         // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Payment(Sale s)
         {
+            if (ModelState.IsValid) {
+                User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
 
-            if (ModelState.IsValid)
-            {
+                s.Buyer = findUser;
+                s.BuyerId = findUser.Id;
+                s.Products = ProductsInCart;
+                s.TotalPrice = calculateTotalSale(ProductsInCart);
+                s.SaleDate = DateTime.Now;
 
+                if (s.TotalPrice > 0) {
+                    _context.Add(s);
+                    await _context.SaveChangesAsync();
 
-            User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
+                    // Actualizar los stocks.
+                    foreach (ProductCart p in s.Products) {
+                        UpdateStock(p.ProductId, p.Quantity);
+                    }
 
-            var sale = new Sale()
-            {
-
-                Buyer = findUser,
-                BuyerId = findUser.Id,
-                Products = ProductsInCart,
-                TotalPrice = calculateTotalSale(ProductsInCart),
-                SaleDate = DateTime.Now,
-            };
-
-            if (sale.TotalPrice > 0) {
-                _context.Add(sale);
-                await _context.SaveChangesAsync();
-
-                // Actualizar los stocks.
-                foreach (ProductCart p in sale.Products) {
-                    UpdateStock(p.ProductId, p.Quantity);
+                    //Vaciar carrito.
+                    ProductsInCart = new List<ProductCart>();
+                    cartItems = 0;
                 }
-
-                //Vaciar carrito.
-                ProductsInCart = new List<ProductCart>();
-                cartItems = 0;
+            
+                return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Index));
-            }
             return View(s);
         }
 
@@ -234,8 +228,9 @@ namespace CompanyManager.Controllers
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<IActionResult> Payment()
+        
+        [Authorize]
+        public  IActionResult Payment()
         {
             return View();
         }

@@ -31,19 +31,24 @@ namespace CompanyManager.Models
         public string CardNumber { get; set; }
 
         [Display(Name = "Nombre y apellido")]
+        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         [MaxLength(18, ErrorMessage = ErrorViewModel.MaxCharacters)]
         [MinLength(8, ErrorMessage = ErrorViewModel.MinCharacters)]
         public string CardName { get; set; }
 
+        [Display(Name = "Mes de vencimiento")]
+        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
+        [Range(1, 12, ErrorMessage = ErrorViewModel.RangeError)]
         public int ExpirationM { get; set; }
 
-        // select del 1 al 12
+        [Display(Name = "Año de vencimiento")]
+        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
+        [Range(2022, 9999, ErrorMessage = ErrorViewModel.RangeError)]
         public int ExpirationY { get; set; }
 
-        // select este año + 5 en adelante
-
-        [MaxLength(4, ErrorMessage = ErrorViewModel.MaxCharacters)]
-        [MinLength(3, ErrorMessage = ErrorViewModel.MinCharacters)]
+        [Display(Name = "Código de seguridad")]
+        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
+        [Range(100, 9999, ErrorMessage = ErrorViewModel.RangeError)]
         public int CardCVV { get; set; }
     }
 }

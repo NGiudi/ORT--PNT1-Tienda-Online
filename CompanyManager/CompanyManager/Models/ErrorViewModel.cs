@@ -16,6 +16,6 @@ namespace CompanyManager.Models
         public const string InvalidLogin = "Email o contraseña invalida.";
         public const string RequiredField = "{0} es obligatorio.";
         public const string InvalidQuantity = "Debe agregar al menos 1 unidad.";
-        
+        public const string RangeError = "Válido entre {1} y {2}";
     }
 }

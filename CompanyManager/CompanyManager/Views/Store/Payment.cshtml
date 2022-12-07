@@ -1,4 +1,10 @@
 ﻿@model CompanyManager.Models.Sale
+
+@{
+    ViewData["Title"] = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <section class="p-4 p-md-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
@@ -7,39 +13,57 @@
                     <div class="text-center mb-4">
                         <h3>Realizar Pago</h3>
                     </div>
+
                     <form asp-action="Payment">
-                        <div asp-validation-summary ="ModelOnly"></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                         <p class="fw-bold mb-4">Agregar nueva Tarjeta:</p>
 
                         <div class="form-outline mb-4">
-                            <label asp-for="CardNumber" class="form-label" for="formControlLgXsd">Numero de la tarjeta</label>
-                            <input asp-for="CardNumber" type="text" id="formControlLgXsd" class="form-control form-control-lg" />
-                            <span asp-validation-for="CardNumber"></span>
+                            <label asp-for="CardNumber" class="form-label"></label>
+                            <input asp-for="CardNumber" type="text" class="form-control form-control-lg" />
+                            <span asp-validation-for="CardNumber" class="text-danger"></span>
                         </div>
 
                         <div class="row mb-4">
-                            <div class="col-7">
+                            <div class="col-8">
                                 <div class="form-outline">
-                                    <label class="form-label" for="formControlLgXM">Nombre y Apellido</label>
-                                    <input type="text" id="formControlLgXM" class="form-control form-control-lg" />
+                                    <label asp-for="CardName" class="form-label"></label>
+                                    <input asp-for="CardName" class="form-control form-control-lg" />
+                                    <span asp-validation-for="CardName" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-3">
+
+                            <div class="col-4">
                                 <div class="form-outline">
-                                    <label class="form-label" for="formControlLgExpk">Vencimiento</label>
-                                    <input type="password" id="formControlLgExpk" class="form-control form-control-lg" placeholder="MM/YYYY" />
+                                    <label asp-for="CardCVV" class="form-label"></label>
+                                    <input asp-for="CardCVV" class="form-control form-control-lg" placeholder="CVV" />
+                                    <span asp-validation-for="CardCVV" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-2">
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
                                 <div class="form-outline">
-                                    <label class="form-label" for="formControlLgcvv">CVV</label>
-                                    <input type="password" id="formControlLgcvv" class="form-control form-control-lg" placeholder="CVV" />
+                                    <label asp-for="ExpirationM" class="form-label"></label>
+                                    <input asp-for="ExpirationM" class="form-control form-control-lg" placeholder="MM" />
+                                    <span asp-validation-for="ExpirationM" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-outline">
+                                    <label asp-for="ExpirationY" class="form-label"></label>
+                                    <input asp-for="ExpirationY" class="form-control form-control-lg" placeholder="YYYY" />
+                                    <span asp-validation-for="ExpirationY" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <a asp-area="" onclick="history.go(-1);" class="btn btn-danger btn-lg btn-block"><i class="fa-solid fa-chevron-left"></i> Volver</a>
+                            <a asp-action="Cart" class="btn btn-danger btn-lg btn-block"><i class="fa-solid fa-chevron-left"></i> Volver</a>
+                            
                             <button type="submit" class="btn btn-success btn-lg btn-block">
                                 <i class="fa-solid fa-money-bill"></i> Confirmar Compra
                             </button>
