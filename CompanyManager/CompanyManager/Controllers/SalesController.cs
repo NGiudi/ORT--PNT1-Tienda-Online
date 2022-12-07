@@ -24,6 +24,7 @@ namespace CompanyManager.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             var sales = from s in _context.Sale select s;
+
             if (id != null)
             {
                 var product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
@@ -31,12 +32,15 @@ namespace CompanyManager.Controllers
                 sales = sales.Where(s => s.Products.Any(pc => pc.ProductId == id));
             }
 
+            sales = sales.OrderByDescending(s => s.SaleDate);
+
             // Asigna el usuario a la venta.
             foreach (var s in sales)
             {
                 var buyer = await _context.User.FirstOrDefaultAsync(e => e.Id == s.BuyerId);
                 s.Buyer = buyer;
             }
+
             return View(await sales.ToListAsync());
         }
 

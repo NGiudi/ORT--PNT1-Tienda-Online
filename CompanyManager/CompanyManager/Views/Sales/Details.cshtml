@@ -49,6 +49,35 @@
     </dd>
 </dl>
 
+<h3 class="text-black-50 fs-4 mt-4">Datos de la tarjeta</h3>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">
+        Nombre en la tarjeta
+    </dt>
+
+    <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.CardName)
+    </dd>
+
+    <dt class="col-sm-3">
+        @Html.DisplayNameFor(model => model.CardNumber)
+    </dt>
+
+    <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.CardNumber)
+    </dd>
+
+    <dt class="col-sm-3">
+        Fecha de expiración
+    </dt>
+
+    <dd class="col-sm-9">
+        @Html.DisplayFor(model => model.ExpirationM)/@Html.DisplayFor(model => model.ExpirationY)
+    </dd>
+</dl>
+
 <h3 class="text-black-50 fs-4 mt-4">Listado de Productos</h3>
 <hr />
 

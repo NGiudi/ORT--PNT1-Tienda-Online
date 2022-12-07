@@ -106,34 +106,37 @@ namespace CompanyManager.Controllers
 
         // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
         [Authorize]
-        public async Task<IActionResult> Sale()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Payment(Sale s)
         {
-            User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
+            if (ModelState.IsValid) {
+                User? findUser = _context.User.Where(u => u.Id == int.Parse(HttpContext.User.Identity.Name)).FirstOrDefault();
 
-            var sale = new Sale()
-            {
-                Buyer = findUser,
-                BuyerId = findUser.Id,
-                Products = ProductsInCart,
-                TotalPrice = calculateTotalSale(ProductsInCart),
-                SaleDate = DateTime.Now,
-            };
+                s.Buyer = findUser;
+                s.BuyerId = findUser.Id;
+                s.Products = ProductsInCart;
+                s.TotalPrice = calculateTotalSale(ProductsInCart);
+                s.SaleDate = DateTime.Now;
 
-            if (sale.TotalPrice > 0) {
-                _context.Add(sale);
-                await _context.SaveChangesAsync();
+                if (s.TotalPrice > 0) {
+                    _context.Add(s);
+                    await _context.SaveChangesAsync();
 
-                // Actualizar los stocks.
-                foreach (ProductCart p in sale.Products) {
-                    UpdateStock(p.ProductId, p.Quantity);
+                    // Actualizar los stocks.
+                    foreach (ProductCart p in s.Products) {
+                        UpdateStock(p.ProductId, p.Quantity);
+                    }
+
+                    //Vaciar carrito.
+                    ProductsInCart = new List<ProductCart>();
+                    cartItems = 0;
                 }
-
-                //Vaciar carrito.
-                ProductsInCart = new List<ProductCart>();
-                cartItems = 0;
+            
+                return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Index));
+            return View(s);
         }
 
         // Al eliminar producto del carrito, luego de apretar en el botón eliminar.
@@ -225,10 +228,11 @@ namespace CompanyManager.Controllers
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<IActionResult> Payment()
+        
+        [Authorize]
+        public  IActionResult Payment()
         {
             return View();
         }
-     }
+    }
 }
