@@ -17,8 +17,6 @@
                     <form asp-action="Payment">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <p class="fw-bold mb-4">Agregar nueva Tarjeta:</p>
-
                         <div class="form-outline mb-4">
                             <label asp-for="CardNumber" class="form-label"></label>
                             <input asp-for="CardNumber" type="text" class="form-control form-control-lg" />
@@ -47,7 +45,14 @@
                             <div class="col-6">
                                 <div class="form-outline">
                                     <label asp-for="ExpirationM" class="form-label"></label>
-                                    <input asp-for="ExpirationM" class="form-control form-control-lg" placeholder="MM" />
+                                    <select asp-for="ExpirationM" class="form-control form-control-lg">
+                                        @{
+                                            for (var month = 1; month <= 12; month++)
+                                            {
+                                                <option value="@month">@month</option>
+                                            }
+                                        }
+                                    </select>
                                     <span asp-validation-for="ExpirationM" class="text-danger"></span>
                                 </div>
                             </div>
@@ -55,7 +60,15 @@
                             <div class="col-6">
                                 <div class="form-outline">
                                     <label asp-for="ExpirationY" class="form-label"></label>
-                                    <input asp-for="ExpirationY" class="form-control form-control-lg" placeholder="YYYY" />
+                                    <select asp-for="ExpirationY" class="form-control form-control-lg"> 
+                                        @{
+                                            var year = DateTime.Now.Year;
+                                            for(var a = 0; a <= 10; a++){
+                                                <option value="@year">@year</option>
+                                                year++;
+                                            }
+                                        }
+                                    </select>
                                     <span asp-validation-for="ExpirationY" class="text-danger"></span>
                                 </div>
                             </div>

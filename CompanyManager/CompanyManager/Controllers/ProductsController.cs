@@ -150,6 +150,8 @@ namespace CompanyManager.Controllers
             var product = await _context.Product.FindAsync(id);
             
             if (product != null) {
+                IList<Stock> productStockLogs = await _context.Stock.Where(s => s.ProductId == product.Id).ToListAsync();
+                _context.Stock.RemoveRange(productStockLogs);
                 _context.Product.Remove(product);
                 _context.SaveChanges();
             }

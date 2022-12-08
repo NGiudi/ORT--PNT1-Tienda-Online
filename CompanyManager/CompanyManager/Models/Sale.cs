@@ -8,7 +8,6 @@ namespace CompanyManager.Models
         public int Id { get; set; }
 
         [Display(Name = "Comprador")]
-        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public Person? Buyer { get; set; }
 
         public int BuyerId { get; set; }
@@ -17,11 +16,9 @@ namespace CompanyManager.Models
         public DateTime? SaleDate { get; set; }
 
         [Display(Name = "Productos")]
-        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public List<ProductCart>? Products { get; set; }
 
         [Display(Name = "Total")]
-        [Required(ErrorMessage = ErrorViewModel.RequiredField)]
         public float TotalPrice { get; set; }
 
         [Display(Name = "Numero de la tarjeta")]
@@ -38,17 +35,14 @@ namespace CompanyManager.Models
 
         [Display(Name = "Mes de vencimiento")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        [Range(1, 12, ErrorMessage = ErrorViewModel.RangeError)]
         public int ExpirationM { get; set; }
 
         [Display(Name = "Año de vencimiento")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        [Range(2022, 9999, ErrorMessage = ErrorViewModel.RangeError)]
         public int ExpirationY { get; set; }
 
         [Display(Name = "Código de seguridad")]
         [Required(ErrorMessage = ErrorViewModel.RequiredField)]
-        [Range(100, 9999, ErrorMessage = ErrorViewModel.RangeError)]
-        public int CardCVV { get; set; }
+        public int? CardCVV { get; set; }
     }
 }

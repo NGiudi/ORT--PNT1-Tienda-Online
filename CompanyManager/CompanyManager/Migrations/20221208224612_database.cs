@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CompanyManager.Migrations
 {
-    public partial class migracion : Migration
+    public partial class database : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,11 +42,29 @@ namespace CompanyManager.Migrations
                     Image = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<float>(type: "REAL", nullable: false),
                     Discount = table.Column<int>(type: "INTEGER", nullable: false),
-                    Stock = table.Column<int>(type: "INTEGER", nullable: false)
+                    Stock = table.Column<int>(type: "INTEGER", nullable: false),
+                    SoldItems = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stock",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CurrentStock = table.Column<int>(type: "INTEGER", nullable: false),
+                    StockUpdate = table.Column<int>(type: "INTEGER", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Reason = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stock", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +75,12 @@ namespace CompanyManager.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     BuyerId = table.Column<int>(type: "INTEGER", nullable: false),
                     SaleDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    TotalPrice = table.Column<float>(type: "REAL", nullable: false)
+                    TotalPrice = table.Column<float>(type: "REAL", nullable: false),
+                    CardNumber = table.Column<string>(type: "TEXT", maxLength: 18, nullable: false),
+                    CardName = table.Column<string>(type: "TEXT", maxLength: 18, nullable: false),
+                    ExpirationM = table.Column<int>(type: "INTEGER", nullable: false),
+                    ExpirationY = table.Column<int>(type: "INTEGER", nullable: false),
+                    CardCVV = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,6 +142,9 @@ namespace CompanyManager.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ProductCart");
+
+            migrationBuilder.DropTable(
+                name: "Stock");
 
             migrationBuilder.DropTable(
                 name: "Product");

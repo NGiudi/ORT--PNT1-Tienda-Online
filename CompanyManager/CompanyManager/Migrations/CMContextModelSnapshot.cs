@@ -132,7 +132,8 @@ namespace CompanyManager.Migrations
                     b.Property<int>("BuyerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CardCVV")
+                    b.Property<int?>("CardCVV")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CardName")

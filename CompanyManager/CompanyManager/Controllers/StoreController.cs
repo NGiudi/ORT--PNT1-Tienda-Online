@@ -104,6 +104,14 @@ namespace CompanyManager.Controllers
             return View(model);
         }
 
+
+        // Vista pago con tarjeta.
+        [Authorize]
+        public IActionResult Payment()
+        {
+            return View();
+        }
+
         // Cuando el usuario concretar la compra, lugeo de apretar en el botón de finalzar compra.
         [Authorize]
         [HttpPost]
@@ -227,12 +235,6 @@ namespace CompanyManager.Controllers
                 _context.Update(findProduct);
                 await _context.SaveChangesAsync();
             }
-        }
-        
-        [Authorize]
-        public  IActionResult Payment()
-        {
-            return View();
         }
     }
 }

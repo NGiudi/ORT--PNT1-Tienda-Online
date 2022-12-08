@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyManager.Migrations
 {
     [DbContext(typeof(CMContext))]
-    [Migration("20221128202931_stockLog")]
-    partial class stockLog
+    [Migration("20221208224612_database")]
+    partial class database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -134,6 +134,26 @@ namespace CompanyManager.Migrations
                     b.Property<int>("BuyerId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CardCVV")
+                        .IsRequired()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CardName")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ExpirationM")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ExpirationY")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("SaleDate")
                         .HasColumnType("TEXT");
 
@@ -154,9 +174,6 @@ namespace CompanyManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CurrentStock")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LastStock")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductId")
